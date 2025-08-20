@@ -733,7 +733,7 @@
     byId('btnSignIn')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open('login'));
   }
 
-  // --- NEW INITIALIZATION LOGIC ---
+  // --- FINAL INITIALIZATION LOGIC ---
   document.addEventListener('DOMContentLoaded', () => {
     console.log('Step 1: DOMContentLoaded event fired.');
     setupEventListeners();
@@ -756,6 +756,11 @@
         console.log('Netlify event: logout');
         window.location.reload();
       });
+
+      // --- THE NEW FIX IS HERE ---
+      console.log('Step 2.5: Manually calling netlifyIdentity.init() for deprecated service.');
+      netlifyIdentity.init();
+
     } else {
       console.error('CRITICAL: Netlify Identity widget script did not load!');
       hide(byId('stateLoading'));
