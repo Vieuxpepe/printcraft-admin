@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard • PrintCraft Studios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans'; }
+    
+    .admin-card {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.9), rgba(31, 41, 55, 0.9));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .admin-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #8B5CF6, #A855F7);
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+    }
+    
+    .rank-badge {
+      transition: all 0.3s ease;
+    }
+    
+    .rank-badge:hover {
+      transform: scale(1.1);
+    }
+    
+    .action-button {
+      transition: all 0.2s ease;
+    }
+    
+    .action-button:hover {
+      transform: translateY(-1px);
+    }
+    
+    .modal {
+      backdrop-filter: blur(8px);
+    }
+    
+    .loading-spinner {
+      border: 3px solid rgba(139, 92, 246, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid #8B5CF6;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="bg-gray-800 border-b border-gray-700 px-6 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          PrintCraft Admin
+        </h1>
+        <span class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-semibold">
+          👑 Administrator
+        </span>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <a href="/staff-enhanced.html" class="action-button bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
+          <i class="fas fa-users mr-2"></i>Staff Console
+        </a>
+        <button id="btnAccount" class="action-button bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition">
+          <i class="fas fa-user mr-2"></i>Account
+        </button>
+        <a href="/" class="action-button bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <button id="btnLogout" class="action-button bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+          <i class="fas fa-sign-out-alt mr-2"></i>Log out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading State -->
+  <div id="stateLoading" class="flex items-center justify-center min-h-screen">
+    <div class="text-center">
+      <div class="loading-spinner mx-auto mb-4"></div>
+      <p class="text-xl">Loading admin dashboard...</p>
+    </div>
+  </div>
+
+  <!-- Not Authenticated State -->
+  <div id="stateNoAuth" class="hidden flex items-center justify-center min-h-screen">
+    <div class="text-center">
+      <i class="fas fa-lock text-6xl text-purple-400 mb-6"></i>
+      <h2 class="text-3xl font-bold mb-4">Authentication Required</h2>
+      <p class="text-gray-400 mb-6">Please sign in to access the admin dashboard.</p>
+      <button id="btnSignIn" class="action-button bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition">
+        <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+      </button>
+    </div>
+  </div>
+
+  <!-- Access Denied State -->
+  <div id="stateAccessDenied" class="hidden flex items-center justify-center min-h-screen">
+    <div class="text-center">
+      <i class="fas fa-ban text-6xl text-red-400 mb-6"></i>
+      <h2 class="text-3xl font-bold mb-4">Access Denied</h2>
+      <p class="text-gray-400 mb-6">You don't have administrator privileges to access this dashboard.</p>
+      <a href="/" class="action-button bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition">
+        <i class="fas fa-home mr-2"></i>Return Home
+      </a>
+    </div>
+  </div>
+
+  <!-- Backend Error State -->
+  <div id="stateBackendError" class="hidden flex items-center justify-center min-h-screen">
+    <div class="text-center max-w-md mx-auto">
+      <i class="fas fa-exclamation-triangle text-6xl text-yellow-400 mb-6"></i>
+      <h2 class="text-3xl font-bold mb-4">Backend Connection Error</h2>
+      <p class="text-gray-400 mb-6">Unable to connect to the staff management system. Please check your Google Apps Script deployment.</p>
+      <button id="retryConnection" class="action-button bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition mr-4">
+        <i class="fas fa-redo mr-2"></i>Retry Connection
+      </button>
+      <a href="/" class="action-button bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition">
+        <i class="fas fa-home mr-2"></i>Return Home
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div id="dashboard" class="hidden">
+    <!-- Statistics Cards -->
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="stat-card rounded-xl p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm font-medium">Total Staff</p>
+              <p id="totalStaff" class="text-3xl font-bold">0</p>
+            </div>
+            <i class="fas fa-users text-2xl text-purple-200"></i>
+          </div>
+        </div>
+        
+        <div class="stat-card rounded-xl p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm font-medium">Active Staff</p>
+              <p id="activeStaff" class="text-3xl font-bold">0</p>
+            </div>
+            <i class="fas fa-user-check text-2xl text-purple-200"></i>
+          </div>
+        </div>
+        
+        <div class="stat-card rounded-xl p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm font-medium">Total Points</p>
+              <p id="totalPoints" class="text-3xl font-bold">0</p>
+            </div>
+            <i class="fas fa-star text-2xl text-purple-200"></i>
+          </div>
+        </div>
+        
+        <div class="stat-card rounded-xl p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm font-medium">Avg Rating</p>
+              <p id="avgRating" class="text-3xl font-bold">4.8</p>
+            </div>
+            <i class="fas fa-trophy text-2xl text-purple-200"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-4 mb-8">
+        <button id="refreshDashboard" class="action-button bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition">
+          <i class="fas fa-sync-alt mr-2"></i>Refresh Data
+        </button>
+        <button id="bulkPointsBtn" class="action-button bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition">
+          <i class="fas fa-gift mr-2"></i>Bulk Award Points
+        </button>
+        <button id="exportDataBtn" class="action-button bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg transition">
+          <i class="fas fa-download mr-2"></i>Export Data
+        </button>
+        <button id="initializeSystemBtn" class="action-button bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition">
+          <i class="fas fa-cog mr-2"></i>Initialize System
+        </button>
+      </div>
+
+      <!-- Staff Management Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Staff List -->
+        <div class="lg:col-span-2">
+          <div class="admin-card rounded-xl p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-xl font-bold">Staff Members</h3>
+              <div class="flex items-center space-x-4">
+                <select id="sortBy" class="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm">
+                  <option value="name">Sort by Name</option>
+                  <option value="points">Sort by Points</option>
+                  <option value="rank">Sort by Rank</option>
+                  <option value="recent">Sort by Recent Activity</option>
+                </select>
+              </div>
+            </div>
+            
+            <div id="staffList" class="space-y-4">
+              <div class="text-center py-8 text-gray-400">
+                <i class="fas fa-users text-4xl mb-4"></i>
+                <p>Loading staff members...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Award Points Panel -->
+        <div class="lg:col-span-1">
+          <div class="admin-card rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-6">Award Points</h3>
+            
+            <form id="awardPointsForm" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">Staff Member</label>
+                <select id="staffSelect" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2">
+                  <option value="">Select staff member...</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-2">Points</label>
+                <input type="number" id="pointsAmount" required min="-100" max="100" 
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2" 
+                       placeholder="Enter points (positive or negative)">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-2">Point Type</label>
+                <select id="pointType" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2">
+                  <option value="commission">Commission Completion</option>
+                  <option value="bonus">Performance Bonus</option>
+                  <option value="quality">Quality Excellence</option>
+                  <option value="teamwork">Teamwork</option>
+                  <option value="adjustment">Manual Adjustment</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-2">Description</label>
+                <input type="text" id="pointDescription" required 
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2" 
+                       placeholder="Brief description">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-2">Notes (Optional)</label>
+                <textarea id="pointNotes" rows="3" 
+                          class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2" 
+                          placeholder="Additional notes..."></textarea>
+              </div>
+              
+              <button type="submit" class="w-full action-button bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg transition">
+                <i class="fas fa-award mr-2"></i>Award Points
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Points Modal -->
+  <div id="bulkPointsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-gray-800 rounded-xl p-6 w-full max-w-md">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold">Bulk Award Points</h3>
+          <button id="closeBulkModal" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <form id="bulkPointsForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Points to Award</label>
+            <input type="number" id="bulkPoints" required min="1" max="50" 
+                   class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2" 
+                   placeholder="Enter points">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-2">Reason</label>
+            <input type="text" id="bulkReason" required 
+                   class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2" 
+                   placeholder="Reason for bulk award">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-2">Notes</label>
+            <textarea id="bulkNotes" rows="3" 
+                      class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2" 
+                      placeholder="Additional notes..."></textarea>
+          </div>
+          
+          <div class="flex space-x-4">
+            <button type="button" id="cancelBulk" class="flex-1 action-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg transition">
+              Cancel
+            </button>
+            <button type="submit" class="flex-1 action-button bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg transition">
+              <i class="fas fa-gift mr-2"></i>Award All
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="hidden"></div>
+
+  <!-- Netlify Identity Widget -->
+  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- Admin Dashboard Script -->
+<script>
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbzQLdlvUD1TdXjKgBQE3HCuAqmqNz1YLHbBaA1AewDNEmDIcanoKcN3rM3R_ODfLCe3/exec";
+
+  let currentUser = null;
+  let staffMembers = [];
+
+  // Utility functions
+  function show(el) { el.classList.remove('hidden'); }
+  function hide(el) { el.classList.add('hidden'); }
+  function byId(id) { return document.getElementById(id); }
+  
+  function showToast(msg, type = 'success') {
+    const t = byId('toast');
+    t.textContent = msg;
+    t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 text-sm px-4 py-2 rounded-lg z-50 ${
+      type === 'success' ? 'bg-green-600 text-white border-green-500' : 'bg-red-600 text-white border-red-500'
+    }`;
+    show(t);
+    setTimeout(() => hide(t), 3000);
+  }
+
+  function hasRole(user, role) {
+    const roles = (user?.app_metadata?.roles) || [];
+    return roles.includes(role);
+  }
+
+  // Authentication and initialization
+  function initializeDashboard() {
+    console.log('Step 3: initializeDashboard() called.');
+    hide(byId('stateLoading'));
+    const u = window.netlifyIdentity && netlifyIdentity.currentUser();
+    
+    if (!u) {
+      console.log('Auth check failed: No user found. Showing login screen.');
+      show(byId('stateNoAuth'));
+      return false;
+    }
+    
+    if (!hasRole(u, 'admin')) {
+      console.log('Auth check failed: User does not have admin role. Showing access denied.');
+      show(byId('stateAccessDenied'));
+      return false;
+    }
+    
+    console.log('Auth check success! Loading dashboard data.');
+    currentUser = u;
+    show(byId('dashboard'));
+    loadDashboardData();
+    return true;
+  }
+
+  // Load dashboard data
+  async function loadDashboardData() {
+    try {
+      console.log('Loading dashboard data from Google Apps Script...');
+      const staffResult = await callBackend('get_all_staff');
+      console.log('Staff result:', staffResult);
+      
+      if (staffResult && staffResult.staff) {
+        staffMembers = staffResult.staff;
+      } else {
+        staffMembers = [];
+      }
+      
+      console.log('Staff members loaded:', staffMembers);
+      const stats = calculateStatistics(staffMembers);
+      
+      updateStatistics(stats);
+      renderStaffList(staffMembers);
+      populateStaffSelect(staffMembers);
+      
+      showToast(`Loaded ${staffMembers.length} staff members`, 'success');
+      
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+      showBackendError(error.message);
+    }
+  }
+
+  // Calculate statistics from staff data
+  function calculateStatistics(staff) {
+    const activeStaff = staff.filter(s => s.is_active);
+    const totalPoints = staff.reduce((sum, s) => sum + (s.total_points || 0), 0);
+    
+    return {
+      totalStaff: staff.length,
+      activeStaff: activeStaff.length,
+      totalPoints: totalPoints,
+      avgRating: 4.8
+    };
+  }
+
+  // Show backend error state
+  function showBackendError(errorMessage) {
+    hide(byId('dashboard'));
+    show(byId('stateBackendError'));
+    
+    const errorDiv = byId('stateBackendError');
+    const existingError = errorDiv.querySelector('.error-details');
+    if (existingError) {
+      existingError.remove();
+    }
+    
+    const errorDetails = document.createElement('div');
+    errorDetails.className = 'error-details bg-red-900/20 border border-red-700 rounded-lg p-3 mt-4';
+    errorDetails.innerHTML = `
+      <p class="text-sm text-red-300"><strong>Error Details:</strong></p>
+      <p class="text-sm text-red-400 mt-1">${errorMessage}</p>
+      <p class="text-sm text-red-400 mt-2">Check your Google Apps Script deployment and make sure it's accessible.</p>
+    `;
+    errorDiv.appendChild(errorDetails);
+  }
+
+  // API call helper with better error handling
+  async function callBackend(action, data = {}) {
+    try {
+      console.log(`Calling backend: ${action}`, data);
+      
+      const payload = { action, ...data };
+      
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Backend response:', result);
+      
+      return result;
+    } catch (error) {
+      console.error('Backend call failed:', error);
+      throw error;
+    }
+  }
+
+  // Update statistics display
+  function updateStatistics(stats) {
+    byId('totalStaff').textContent = stats.totalStaff;
+    byId('activeStaff').textContent = stats.activeStaff;
+    byId('totalPoints').textContent = stats.totalPoints.toLocaleString();
+    byId('avgRating').textContent = stats.avgRating;
+  }
+
+  // Render staff list
+  function renderStaffList(staff) {
+    const container = byId('staffList');
+    
+    if (!staff || staff.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-8 text-gray-400">
+          <i class="fas fa-users text-4xl mb-4"></i>
+          <p>No staff members found</p>
+          <p class="text-sm mt-2">Staff profiles will be created automatically when they first sign in to the staff console.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = staff.map(member => `
+      <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
+              <span class="text-lg font-bold">${(member.full_name || member.email).charAt(0).toUpperCase()}</span>
+            </div>
+            <div>
+              <h4 class="font-semibold">${member.full_name || member.email}</h4>
+              <p class="text-sm text-gray-400">${member.email}</p>
+              <div class="flex items-center space-x-2 mt-1">
+                <span class="rank-badge px-2 py-1 rounded text-xs font-semibold" 
+                      style="background-color: ${member.rank_color || '#CD7F32'}">
+                  ${member.current_rank || 'Apprentice'}
+                </span>
+                <span class="text-sm text-gray-400">${member.total_points || 0} points</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="quickAwardPoints('${member.email}', 10)" 
+                    class="action-button bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
+              +10
+            </button>
+            <button onclick="quickAwardPoints('${member.email}', 25)" 
+                    class="action-button bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+              +25
+            </button>
+            <button onclick="quickAwardPoints('${member.email}', -5)" 
+                    class="action-button bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+              -5
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Populate staff select dropdown
+  function populateStaffSelect(staff) {
+    const select = byId('staffSelect');
+    select.innerHTML = '<option value="">Select staff member...</option>';
+    
+    staff.forEach(member => {
+      const option = document.createElement('option');
+      option.value = member.email;
+      option.textContent = `${member.full_name || member.email} (${member.total_points || 0} points)`;
+      select.appendChild(option);
+    });
+  }
+
+  // Quick award points
+  async function quickAwardPoints(email, points) {
+    try {
+      const result = await callBackend('award_points', {
+        staffEmail: email,
+        points: points,
+        pointType: points > 0 ? 'bonus' : 'adjustment',
+        description: `Quick ${points > 0 ? 'award' : 'deduction'} from admin dashboard`,
+        notes: `${points > 0 ? 'Awarded' : 'Deducted'} by ${currentUser.email}`,
+        awardedBy: currentUser.email
+      });
+
+      if (result.success) {
+        showToast(`${points > 0 ? 'Awarded' : 'Deducted'} ${Math.abs(points)} points ${points > 0 ? 'to' : 'from'} ${email}`, 'success');
+        
+        await loadDashboardData();
+      } else {
+        throw new Error(result.error || 'Failed to award points');
+      }
+    } catch (error) {
+      console.error('Error awarding points:', error);
+      showToast('Failed to award points: ' + error.message, 'error');
+    }
+  }
+
+  // Handle award points form
+  async function handleAwardPoints(e) {
+    e.preventDefault();
+    
+    const formData = {
+      staffEmail: byId('staffSelect').value,
+      points: parseInt(byId('pointsAmount').value),
+      pointType: byId('pointType').value,
+      description: byId('pointDescription').value,
+      notes: byId('pointNotes').value,
+      awardedBy: currentUser.email
+    };
+
+    try {
+      const result = await callBackend('award_points', formData);
+      
+      if (result.success) {
+        showToast(`Awarded ${formData.points} points to ${formData.staffEmail}`, 'success');
+        e.target.reset();
+        await loadDashboardData();
+      } else {
+        throw new Error(result.error || 'Failed to award points');
+      }
+    } catch (error) {
+      console.error('Error awarding points:', error);
+      showToast('Failed to award points: ' + error.message, 'error');
+    }
+  }
+
+  // Handle bulk points
+  async function handleBulkPoints(e) {
+    e.preventDefault();
+    
+    const points = parseInt(byId('bulkPoints').value);
+    const reason = byId('bulkReason').value;
+    const notes = byId('bulkNotes').value;
+    
+    try {
+      let successCount = 0;
+      let errorCount = 0;
+      
+      for (const member of staffMembers) {
+        try {
+          const result = await callBackend('award_points', {
+            staffEmail: member.email,
+            points: points,
+            pointType: 'bonus',
+            description: reason,
+            notes: notes,
+            awardedBy: currentUser.email
+          });
+          
+          if (result.success) {
+            successCount++;
+          } else {
+            errorCount++;
+          }
+        } catch (error) {
+          errorCount++;
+        }
+      }
+      
+      showToast(`Bulk award completed: ${successCount} successful, ${errorCount} failed`, 'success');
+      hideBulkPointsModal();
+      await loadDashboardData();
+      
+    } catch (error) {
+      console.error('Error with bulk points:', error);
+      showToast('Bulk award failed: ' + error.message, 'error');
+    }
+  }
+
+  // Initialize system
+  async function initializeSystem() {
+    try {
+      const result = await callBackend('initialize_system');
+      
+      if (result.success) {
+        showToast('Staff system initialized successfully!', 'success');
+        await loadDashboardData();
+      } else {
+        throw new Error(result.error || 'Failed to initialize system');
+      }
+    } catch (error) {
+      console.error('Error initializing system:', error);
+      showToast('Failed to initialize system: ' + error.message, 'error');
+    }
+  }
+
+  // Modal functions
+  function showBulkPointsModal() {
+    show(byId('bulkPointsModal'));
+    byId('bulkPointsModal').classList.add('flex');
+  }
+
+  function hideBulkPointsModal() {
+    hide(byId('bulkPointsModal'));
+    byId('bulkPointsModal').classList.remove('flex');
+    byId('bulkPointsForm').reset();
+  }
+
+  // Export data
+  function exportData() {
+    const data = {
+      staff: staffMembers,
+      exportDate: new Date().toISOString(),
+      exportedBy: currentUser.email
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `staff-data-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showToast('Staff data exported successfully', 'success');
+  }
+
+  // Setup event listeners
+  function setupEventListeners() {
+    byId('awardPointsForm')?.addEventListener('submit', handleAwardPoints);
+    byId('bulkPointsForm')?.addEventListener('submit', handleBulkPoints);
+    byId('bulkPointsBtn')?.addEventListener('click', showBulkPointsModal);
+    byId('closeBulkModal')?.addEventListener('click', hideBulkPointsModal);
+    byId('cancelBulk')?.addEventListener('click', hideBulkPointsModal);
+    byId('refreshDashboard')?.addEventListener('click', loadDashboardData);
+    byId('exportDataBtn')?.addEventListener('click', exportData);
+    byId('initializeSystemBtn')?.addEventListener('click', initializeSystem);
+    byId('retryConnection')?.addEventListener('click', loadDashboardData);
+    byId('btnAccount')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open('account'));
+    byId('btnLogout')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.logout());
+    byId('btnSignIn')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open('login'));
+  }
+
+  // --- NEW INITIALIZATION LOGIC ---
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('Step 1: DOMContentLoaded event fired.');
+    setupEventListeners();
+
+    if (window.netlifyIdentity) {
+      console.log('Step 2: Netlify Identity widget is loaded. Attaching event listeners.');
+      
+      netlifyIdentity.on('init', user => {
+        console.log('Netlify event: init');
+        initializeDashboard();
+      });
+
+      netlifyIdentity.on('login', user => {
+        console.log('Netlify event: login');
+        netlifyIdentity.close();
+        window.location.reload();
+      });
+
+      netlifyIdentity.on('logout', () => {
+        console.log('Netlify event: logout');
+        window.location.reload();
+      });
+    } else {
+      console.error('CRITICAL: Netlify Identity widget script did not load!');
+      hide(byId('stateLoading'));
+    }
+  });
+</script>
+</body>
+</html>
+

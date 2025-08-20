@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintCraft Studios | Custom 3D Models & Miniatures</title>
+    <meta name="description" content="Custom 3D models and miniatures by Cathaldus. Specializing in high-detail characters and monsters for tabletop games like D&D and Warhammer. Based in Trois-Rivières.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for smooth scrolling and animations */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .hamburger {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            transition: all 0.25s;
+            position: relative;
+        }
+        
+        .hamburger-top,
+        .hamburger-middle,
+        .hamburger-bottom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            transform: rotate(0);
+            transition: all 0.5s;
+        }
+        
+        .hamburger-middle {
+            transform: translateY(7px);
+        }
+        
+        .hamburger-bottom {
+            transform: translateY(14px);
+        }
+        
+        .open {
+            transform: rotate(90deg);
+            transform: translateY(0px);
+        }
+        
+        .open .hamburger-top {
+            transform: rotate(45deg) translateY(6px) translate(6px);
+        }
+        
+        .open .hamburger-middle {
+            display: none;
+        }
+        
+        open .hamburger-bottom {
+            transform: rotate(-45deg) translateY(6px) translate(-6px);
+        }
+        
+        .gallery-item {
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(126, 34, 206, 0.1), 0 10px 10px -5px rgba(126, 34, 206, 0.04);
+        }
+    </style>
+
+    <!-- Added by Assistant: Lightbox, AOS, Favicon & Social Meta -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.3/photoswipe.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <meta property="og:title" content="PrintCraft Studios | Custom 3D Models & Miniatures">
+    <meta property="og:description" content="Custom 3D models and miniatures by Cathaldus. Specializing in high-detail characters and monsters for tabletop games.">
+    <meta property="og:image" content="https://your-website-url.com/images/og-share.jpg">
+    <meta property="og:url" content="https://your-website-url.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <!-- Navigation -->
+    <header class="fixed w-full bg-gray-900/90 backdrop-blur-sm z-50 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold text-purple-400 hover:text-purple-300 transition">PrintCraft <span class="text-white">Studios</span></a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-purple-400 transition">Home</a>
+                    <a href="#services" class="hover:text-purple-400 transition">Services</a>
+                    <a href="#gallery" class="hover:text-purple-400 transition">Gallery</a>
+                    <a href="#pricing" class="hover:text-purple-400 transition">Pricing</a>
+                    <a href="#commission" class="hover:text-purple-400 transition" data-analytics="nav_commission">Commission</a>
+                    <a href="/members" class="hover:text-purple-400 transition">Members</a>
+                    <a href="#reviews" class="hover:text-purple-400 transition">Reviews</a>
+                    <a href="#process" class="hover:text-purple-400 transition">Process</a>
+                    <a href="#contact" class="hover:text-purple-400 transition">Contact</a>
+                </nav>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="menu-btn" class="hamburger focus:outline-none">
+                        <span class="hamburger-top"></span>
+                        <span class="hamburger-middle"></span>
+                        <span class="hamburger-bottom"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="menu" class="hidden md:hidden">
+                <div class="flex flex-col space-y-4 mt-4 pt-4 pb-6 border-t border-gray-800">
+                    <a href="#home" class="hover:text-purple-400 transition">Home</a>
+                    <a href="#services" class="hover:text-purple-400 transition">Services</a>
+                    <a href="#gallery" class="hover:text-purple-400 transition">Gallery</a>
+                    <a href="#pricing" class="hover:text-purple-400 transition">Pricing</a>
+                    <a href="#commission" class="hover:text-purple-400 transition" data-analytics="nav_commission">Commission</a>
+                    <a href="/members" class="hover:text-purple-400 transition">Members</a>
+                    <a href="#reviews" class="hover:text-purple-400 transition">Reviews</a>
+                    <a href="#process" class="hover:text-purple-400 transition">Process</a>
+                    <a href="#contact" class="hover:text-purple-400 transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">Bring Your Imagination <span class="text-purple-400">to the Table</span></h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">Premium 3D printed miniatures and custom designs for tabletop gaming enthusiasts. Handcrafted in Trois-Rivières, Quebec.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#gallery" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105">View My Models</a>
+                    <a href="#commission" data-analytics="hero_quote" class="bg-transparent hover:bg-gray-800 text-purple-400 font-semibold hover:text-white py-3 px-8 border border-purple-400 hover:border-transparent rounded-lg transition duration-300 transform hover:scale-105">Get a Quote</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our <span class="text-purple-400">Services</span></h2>
+                <p class="max-w-2xl mx-auto text-gray-300">From concept to painted masterpiece, we handle every step with precision and artistry.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div data-aos="fade-up" class="service-card bg-gray-900 rounded-xl p-8 shadow-lg transition duration-300">
+                    <div class="text-purple-400 text-4xl mb-6">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">High-Detail 3D Prints</h3>
+                    <p class="text-gray-300">Using premium FDM printers, we produce miniatures with crisp details that bring your characters to life on the tabletop.</p>
+                </div>
+                
+                <!-- Service Card 2 -->
+                <div data-aos="fade-up" class="service-card bg-gray-900 rounded-xl p-8 shadow-lg transition duration-300">
+                    <div class="text-purple-400 text-4xl mb-6">
+                        <i class="fas fa-pencil-ruler"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Custom Model Design</h3>
+                    <p class="text-gray-300">Have a unique character concept? Our digital sculptors will transform your vision into a 3D model ready for printing.</p>
+                </div>
+                
+                <!-- Service Card 3 -->
+                <div data-aos="fade-up" class="service-card bg-gray-900 rounded-xl p-8 shadow-lg transition duration-300">
+                    <div class="text-purple-400 text-4xl mb-6">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Professional Painting</h3>
+                    <p class="text-gray-300">Our miniature painting service applies expert techniques to make your models battle-ready with stunning tabletop quality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    
+    <section id="gallery" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured <span class="text-purple-400">Creations</span></h2>
+                <p class="max-w-2xl mx-auto text-gray-300">Explore our collection of popular miniatures, each crafted with attention to detail and gaming functionality.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300" data-aos="fade-up">
+                    <a href="images/draconic_knight.jpg" data-pswp-width="1600" data-pswp-height="1200" target="_blank">
+                        <img class="w-full h-64 object-cover" src="images/draconic_knight.jpg" alt="Draconic Knight - 3D printed miniature with intricate dragon-themed armor">
+                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Draconic Knight</h3>
+                        <p class="text-gray-300 mb-4">An elite warrior clad in intricate, dragon-themed armor.</p>
+                        <a href="#contact" class="text-purple-400 hover:text-purple-300 font-semibold transition" data-analytics="gallery_inquire">Inquire About This Model →</a>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <a href="images/orc_warlord.jpg" data-pswp-width="1600" data-pswp-height="1200" target="_blank">
+                        <img class="w-full h-64 object-cover" src="images/orc_warlord.jpg" alt="Orc Warlord - brutish chieftain miniature, ready to lead a warband">
+                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Orc Warlord</h3>
+                        <p class="text-gray-300 mb-4">A brutish chieftain ready to lead his warband to victory.</p>
+                        <a href="#contact" class="text-purple-400 hover:text-purple-300 font-semibold transition" data-analytics="gallery_inquire">Inquire About This Model →</a>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <a href="images/charizard.jpg" data-pswp-width="1600" data-pswp-height="1200" target="_blank">
+                        <img class="w-full h-64 object-cover" src="images/charizard.jpg" alt="Charizard - iconic fire dragon collectible miniature">
+                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Charizard: Fire Dragon</h3>
+                        <p class="text-gray-300 mb-4">A faithful recreation of the iconic fire dragon, perfect for collectors.</p>
+                        <a href="#contact" class="text-purple-400 hover:text-purple-300 font-semibold transition" data-analytics="gallery_inquire">Inquire About This Model →</a>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300" data-aos="fade-up">
+                    <a href="images/cursed_swordsman.jpg" data-pswp-width="1600" data-pswp-height="1200" target="_blank">
+                        <img class="w-full h-64 object-cover" src="images/cursed_swordsman.jpg" alt="The Cursed Swordsman - dynamic mid-leap miniature">
+                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">The Cursed Swordsman</h3>
+                        <p class="text-gray-300 mb-4">A dynamic miniature captured mid-leap, ideal for a heroic player character.</p>
+                        <a href="#contact" class="text-purple-400 hover:text-purple-300 font-semibold transition" data-analytics="gallery_inquire">Inquire About This Model →</a>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <a href="images/guts.jpg" data-pswp-width="1600" data-pswp-height="1200" target="_blank">
+                        <img class="w-full h-64 object-cover" src="images/guts.jpg" alt="Guts - tribute to legendary dark swordsman, high-detail print">
+                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Guts - Dark Swordsman</h3>
+                        <p class="text-gray-300 mb-4">A tribute to the legendary manga swordsman, designed for high-detail printing.</p>
+                        <a href="#contact" class="text-purple-400 hover:text-purple-300 font-semibold transition" data-analytics="gallery_inquire">Inquire About This Model →</a>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item relative bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <a href="images/oathbound_sentinel.jpg" data-pswp-width="1600" data-pswp-height="1200" target="_blank">
+                        <img class="w-full h-64 object-cover" src="images/oathbound_sentinel.jpg" alt="Oathbound Sentinel - heavily armored paladin miniature">
+                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">The Oathbound Sentinel</h3>
+                        <p class="text-gray-300 mb-4">A heavily armored paladin, serving as the perfect bulwark in any adventure.</p>
+                        <a href="#contact" class="text-purple-400 hover:text-purple-300 font-semibold transition" data-analytics="gallery_inquire">Inquire About This Model →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Pricing / Commission Tiers -->
+    <section id="pricing" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Commission <span class="text-purple-400">Tiers</span></h2>
+                <p class="max-w-2xl mx-auto text-gray-300">Clear options to fit your needs and budget. Prices are guidelines and may vary by complexity.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tier 1 -->
+                <div class="bg-gray-900 rounded-xl p-8 shadow-lg border border-gray-800" data-aos="fade-up">
+                    <h3 class="text-2xl font-bold mb-2">Tabletop Ready</h3>
+                    <p class="text-gray-400 mb-6">Clean, durable, and ready to play.</p>
+                    <ul class="space-y-3 text-gray-300 mb-8 list-disc list-inside">
+                        <li>High‑quality FDM print (Bambu Lab A1)</li>
+                        <li>Clean base coats + simple shading</li>
+                        <li>Matte protective varnish</li>
+                        <li>Basic base texture</li>
+                    </ul>
+                    <div class="text-3xl font-extrabold mb-6 text-purple-400">From $XX</div>
+                    <a href="#contact" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition">Request this tier</a>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="bg-gray-900 rounded-xl p-8 shadow-lg border border-purple-700/30 ring-1 ring-purple-700/30" data-aos="fade-up" data-aos-delay="100">
+                    <div class="inline-block px-3 py-1 mb-3 text-xs font-semibold bg-purple-700/20 text-purple-300 rounded-full">Most Popular</div>
+                    <h3 class="text-2xl font-bold mb-2">Parade Ready</h3>
+                    <p class="text-gray-400 mb-6">Standout heroes and centerpieces.</p>
+                    <ul class="space-y-3 text-gray-300 mb-8 list-disc list-inside">
+                        <li>Advanced edge highlights & glazing</li>
+                        <li>Detailed basing (tufts, debris, OSL accents)</li>
+                        <li>Freehand insignias or patterns</li>
+                        <li>Extra quality checks</li>
+                    </ul>
+                    <div class="text-3xl font-extrabold mb-6 text-purple-400">From $XX</div>
+                    <a href="#contact" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition">Request this tier</a>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="bg-gray-900 rounded-xl p-8 shadow-lg border border-gray-800" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-2xl font-bold mb-2">Display Quality</h3>
+                    <p class="text-gray-400 mb-6">Competition-grade showcase work.</p>
+                    <ul class="space-y-3 text-gray-300 mb-8 list-disc list-inside">
+                        <li>Non-metallic metal (NMM)</li>
+                        <li>Object source lighting (OSL)</li>
+                        <li>Complex basing / scene composition</li>
+                        <li>Proof-of-process photos on request</li>
+                    </ul>
+                    <div class="text-3xl font-extrabold mb-6 text-purple-400">From $XX</div>
+                    <a href="#contact" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition">Request this tier</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Commission Request (Multi-Step) -->
+    <section id="commission" class="py-20 bg-gray-900">
+      <div class="container mx-auto px-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-10" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Start a <span class="text-purple-400">Commission</span></h2>
+            <p class="max-w-2xl mx-auto text-gray-300">Answer a few quick questions for an accurate quote. You can attach reference images or links in the last step.</p>
+          </div>
+
+                    <!-- Progress Bar -->
+          <div class="w-full bg-gray-800 rounded-full h-2.5 mb-8">
+            <div id="commission-progress" class="bg-purple-600 h-2.5 rounded-full" style="width: 20%"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div class="md:col-span-2">
+<form id="commissionForm" action="https://formspree.io/f/xpwlkzdd" method="POST" enctype="multipart/form-data" class="bg-gray-800 rounded-xl p-6 md:p-8 shadow-lg" novalidate>
+            <!-- Honeypot (leave blank) -->
+            <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off">
+            <!-- Meta -->
+            <input type="hidden" name="form_type" value="Commission Request">
+            <input type="hidden" id="started_at" name="started_at" value="">
+            <input type="hidden" id="estimate_total" name="estimate_total" value="">
+            <input type="hidden" id="estimate_breakdown" name="estimate_breakdown" value="">
+
+            <!-- Step 1: Your Info -->
+            <div class="step" data-step="1">
+              <h3 class="text-xl font-bold mb-6">Your Info</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-300 mb-2" for="c_name">Name *</label>
+                  <input id="c_name" name="name" type="text" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div>
+                  <label class="block text-gray-300 mb-2" for="c_email">Email *</label>
+                  <input id="c_email" name="email" type="email" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-gray-300 mb-2" for="c_location">Location (for shipping estimate)</label>
+                  <input id="c_location" name="location" type="text" placeholder="City, Country" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Project Details -->
+            <div class="step hidden" data-step="2">
+              <h3 class="text-xl font-bold mb-6">Project Details</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                  <label class="block text-gray-300 mb-2" for="c_model_link">Model Link (MakerWorld, STL, etc.) *</label>
+                  <input id="c_model_link" name="model_link" type="url" required placeholder="https://makerworld.com/..." class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div>
+                  <label class="block text-gray-300 mb-2" for="c_scale">Scale *</label>
+                  <select id="c_scale" name="scale" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    <option value="" disabled selected>Select a scale</option>
+                    <option>28mm</option>
+                    <option>32mm</option>
+                    <option>35mm</option>
+                    <option>54mm</option>
+                    <option>75mm</option>
+                    <option>Custom</option>
+                  </select>
+                </div>
+                <div id="scale-custom-wrap" class="hidden">
+                  <label class="block text-gray-300 mb-2" for="c_scale_custom">Custom scale (mm)</label>
+                  <input id="c_scale_custom" name="scale_custom" type="number" min="10" max="300" step="1" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-gray-300 mb-2">Service *</label>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center bg-gray-900 border border-gray-700 rounded-lg p-3">
+                      <input type="radio" name="service" value="Print Only" class="mr-3" required>
+                      <span>Print only (no painting)</span>
+                    </label>
+                    <label class="flex items-center bg-gray-900 border border-gray-700 rounded-lg p-3">
+                      <input type="radio" name="service" value="Print + Paint" class="mr-3" required>
+                      <span>Print + Paint</span>
+                    </label>
+                  </div>
+                </div>
+                <div id="paint-tier-wrap" class="md:col-span-2">
+                  <label class="block text-gray-300 mb-2">Paint Tier</label>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <label class="flex items-center bg-gray-900 border border-gray-700 rounded-lg p-3">
+                      <input type="radio" name="paint_tier" value="Tabletop Ready" class="mr-3">
+                      <span>Tabletop Ready</span>
+                    </label>
+                    <label class="flex items-center bg-gray-900 border border-gray-700 rounded-lg p-3">
+                      <input type="radio" name="paint_tier" value="Parade Ready" class="mr-3">
+                      <span>Parade Ready</span>
+                    </label>
+                    <label class="flex items-center bg-gray-900 border border-gray-700 rounded-lg p-3">
+                      <input type="radio" name="paint_tier" value="Display Quality" class="mr-3">
+                      <span>Display Quality</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Schedule & Qty -->
+            <div class="step hidden" data-step="3">
+              <h3 class="text-xl font-bold mb-6">Schedule & Quantity</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-300 mb-2" for="c_deadline">Target Deadline</label>
+                  <input id="c_deadline" name="deadline" type="date" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                  <label class="inline-flex items-center mt-3 text-gray-300">
+                    <input type="checkbox" id="deadline_flexible" name="deadline_flexible" class="mr-2">
+                    <span>Flexible timeline</span>
+                  </label>
+                </div>
+                <div>
+                  <label class="block text-gray-300 mb-2" for="c_quantity">Quantity *</label>
+                  <input id="c_quantity" name="quantity" type="number" min="1" value="1" required class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-gray-300 mb-2" for="c_colors">Color Scheme / Notes</label>
+                  <textarea id="c_colors" name="notes" rows="4" placeholder="Scheme, basing, pose tweaks, magnets, etc." class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4: References -->
+            <div class="step hidden" data-step="4">
+              <h3 class="text-xl font-bold mb-6">References</h3>
+              <p class="text-gray-400 mb-4">You can attach screenshots, concept art, or ZIP files. Multiple files allowed (max ~25MB total, depending on your email provider).</p>
+              <input id="c_files" name="references" type="file" multiple
+                     accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.zip"
+                     class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+              <p class="text-sm text-gray-500 mt-2">Optional: include public links in the notes as well.</p>
+            </div>
+
+            <!-- Step 5: Review -->
+            <div class="step hidden" data-step="5">
+              <h3 class="text-xl font-bold mb-6">Review & Submit</h3>
+              <div id="reviewBox" class="bg-gray-900 border border-gray-700 rounded-lg p-4 text-gray-300 text-sm"></div>
+              <label class="inline-flex items-center mt-4 text-gray-300">
+                <input type="checkbox" id="agree" required class="mr-2">
+                <span>I confirm the details are accurate and I’m ready to request a quote.</span>
+              </label>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex justify-between items-center mt-8">
+              <button type="button" id="prevBtn" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition" disabled>Back</button>
+              <div class="flex gap-3">
+                <button type="button" id="nextBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition">Next</button>
+                <button type="submit" id="submitBtn" class="hidden bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">Submit</button>
+              </div>
+            </div>
+          </form>
+
+          <p class="text-xs text-gray-500 mt-4">Anti-spam: This form includes a honeypot field and basic client-side validation.</p>
+            </div>
+            <aside class="w-full md:sticky md:top-28">
+              <div id="estimateBox" class="bg-gray-900 border border-gray-700 rounded-xl p-4">
+                <div class="flex items-baseline justify-between">
+                  <h3 class="text-lg font-semibold">Instant Estimate</h3>
+                  <div id="estimateTotal" class="text-2xl font-extrabold text-purple-400">$—</div>
+                </div>
+                <div id="estimateBreakdown" class="text-sm text-gray-400 mt-2 space-y-1"></div>
+                <p class="text-xs text-gray-500 mt-3">This is an automatic estimate based on your selections. Final quote may vary after model review. Shipping & taxes not included.</p>
+              </div>
+            </aside>
+          </div>
+<script>
+      (function(){
+        
+        // --- Pricing Config (EDIT THESE VALUES TO MATCH YOUR RATES) ---
+        const PRICING = {
+          currency: 'CAD',
+          symbol: '$',
+          // Base print price per model by scale (Print Only). Custom uses per-mm formula.
+          basePrint: { '28mm': 15, '32mm': 18, '35mm': 22, '54mm': 35, '75mm': 55, minCustom: 15, customPerMm: 0.7 },
+          // Extra painting cost per model (only when "Print + Paint" is selected).
+          paintTier: { 'Tabletop Ready': 20, 'Parade Ready': 45, 'Display Quality': 90 },
+          // Bulk discounts on the full per-unit subtotal (print + paint)
+          quantityDiscounts: [ { min: 10, pct: 0.10 }, { min: 5, pct: 0.05 } ],
+          // Rush fees based on days until deadline
+          rush: [ { days: 7, pct: 0.25 }, { days: 14, pct: 0.10 } ]
+        };
+
+        function fmt(n){ return PRICING.symbol + (Math.round(n)).toLocaleString() + ' ' + PRICING.currency; }
+        function parseIntSafe(v){ const n = parseInt(v, 10); return isNaN(n) ? 0 : n; }
+        function daysUntil(dateStr){
+          if (!dateStr) return Infinity;
+          const d = new Date(dateStr + 'T00:00:00');
+          if (isNaN(d.getTime())) return Infinity;
+          const now = new Date();
+          const ms = d.getTime() - now.getTime();
+          return Math.ceil(ms / (1000*60*60*24));
+        }
+
+        function computeEstimate(){
+          const serviceEl = document.querySelector('input[name="service"]:checked');
+          const service = serviceEl ? serviceEl.value : null;
+
+          const scale = (document.getElementById('c_scale') || {}).value || '';
+          const scaleCustomVal = parseIntSafe((document.getElementById('c_scale_custom') || {}).value || '');
+
+          const qty = Math.max(1, parseIntSafe((document.getElementById('c_quantity') || {}).value || '1'));
+          const deadline = (document.getElementById('c_deadline') || {}).value || '';
+          const days = daysUntil(deadline);
+          const paintTierEl = document.querySelector('input[name="paint_tier"]:checked');
+          const paintTier = paintTierEl ? paintTierEl.value : null;
+
+          // Base print price per unit
+          let printPerUnit = 0;
+          if (PRICING.basePrint[scale]) {
+            printPerUnit = PRICING.basePrint[scale];
+          } else if (scale === 'Custom' && scaleCustomVal > 0) {
+            printPerUnit = Math.max(PRICING.basePrint.minCustom, scaleCustomVal * PRICING.basePrint.customPerMm);
+          }
+
+          // Paint add-on per unit
+          let paintPerUnit = 0;
+          if (service === 'Print + Paint' && paintTier && PRICING.paintTier[paintTier]) {
+            paintPerUnit = PRICING.paintTier[paintTier];
+          }
+
+          let perUnit = printPerUnit + paintPerUnit;
+
+          // Quantity discount (pick the best applicable)
+          let discountPct = 0;
+          for (const t of PRICING.quantityDiscounts){
+            if (qty >= t.min) { discountPct = Math.max(discountPct, t.pct); }
+          }
+          const perUnitAfterDiscount = perUnit * (1 - discountPct);
+          let subtotal = perUnitAfterDiscount * qty;
+
+          // Rush fee
+          let rushPct = 0;
+          for (const r of PRICING.rush){
+            if (days <= r.days) { rushPct = Math.max(rushPct, r.pct); }
+          }
+          const rushFee = subtotal * rushPct;
+          const total = subtotal + rushFee;
+
+          // Build breakdown
+          const lines = [];
+          lines.push('Base print per unit: ' + fmt(printPerUnit));
+          if (paintPerUnit > 0) lines.push('Paint per unit (' + paintTier + '): ' + fmt(paintPerUnit));
+          lines.push('Quantity: ' + qty + (discountPct ? ' (bulk discount ' + Math.round(discountPct*100) + '%)' : ''));
+          if (rushPct) lines.push('Rush fee (' + Math.round(rushPct*100) + '%): ' + fmt(rushFee));
+          lines.push('<strong>Estimated total: ' + fmt(total) + '</strong>');
+
+          const totalEl = document.getElementById('estimateTotal');
+          const breakdownEl = document.getElementById('estimateBreakdown');
+          if (totalEl) totalEl.textContent = fmt(total);
+          if (breakdownEl) breakdownEl.innerHTML = '<div class="space-y-1">' + lines.map(l => '<div>' + l + '</div>').join('') + '</div>';
+
+          const hiddenTotal = document.getElementById('estimate_total');
+          const hiddenBreakdown = document.getElementById('estimate_breakdown');
+          if (hiddenTotal) hiddenTotal.value = total.toFixed(0) + ' ' + PRICING.currency;
+          if (hiddenBreakdown) hiddenBreakdown.value = lines.join(' | ');
+        }
+
+const form = document.getElementById('commissionForm');
+        if (!form) return;
+
+        // Steps
+        const steps = Array.from(form.querySelectorAll('.step'));
+        const progress = document.getElementById('commission-progress');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const startedAt = document.getElementById('started_at');
+        if (startedAt) startedAt.value = new Date().toISOString();
+
+        let current = 0;
+
+        function showStep(i){
+          steps.forEach((s, idx) => s.classList.toggle('hidden', idx !== i));
+          const percent = Math.round(((i+1)/steps.length) * 100);
+          if (progress) progress.style.width = percent + '%';
+          prevBtn.disabled = i === 0;
+          nextBtn.classList.toggle('hidden', i === steps.length - 1);
+          submitBtn.classList.toggle('hidden', i !== steps.length - 1);
+          // Build review
+          if (i === steps.length - 1) buildReview();
+          // Scroll to top of form on step change
+          form.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+
+        function validateStep(i){
+          // simple required validation in current step
+          const fields = steps[i].querySelectorAll('[required]');
+          for (const f of fields){
+            if (f.type === 'radio'){
+              // at least one in radio group
+              const group = form.querySelectorAll('input[name="'+ f.name +'"]:checked');
+              if (group.length === 0){
+                f.focus();
+                return false;
+              }
+            } else if (!f.value){
+              f.focus();
+              return false;
+            }
+          }
+          return true;
+        }
+
+        function buildReview(){
+          const get = id => (document.getElementById(id) || {}).value || '';
+          const checkedVal = name => {
+            const el = form.querySelector('input[name="'+name+'"]:checked');
+            return el ? el.value : '';
+          };
+          const lines = [
+            '<strong>Contact</strong>',
+            'Name: ' + get('c_name'),
+            'Email: ' + get('c_email'),
+            'Location: ' + get('c_location'),
+            '',
+            '<strong>Project</strong>',
+            'Model Link: ' + get('c_model_link'),
+            'Scale: ' + (get('c_scale') === 'Custom' ? (get('c_scale_custom') + 'mm') : get('c_scale')),
+            'Service: ' + checkedVal('service'),
+            'Paint Tier: ' + checkedVal('paint_tier'),
+            '',
+            '<strong>Schedule</strong>',
+            'Deadline: ' + (document.getElementById('deadline_flexible').checked ? 'Flexible' : get('c_deadline')),
+            'Quantity: ' + get('c_quantity'),
+            '',
+            '<strong>Notes</strong>',
+            (get('c_colors') || '(none)')
+          ];
+          const box = document.getElementById('reviewBox');
+          if (box) box.innerHTML = '<div class="space-y-1">' + lines.map(l => '<div>'+l+'</div>').join('') + '</div>';
+        }
+
+        // Custom scale show/hide
+        const scale = document.getElementById('c_scale');
+        const scaleCustom = document.getElementById('scale-custom-wrap');
+        if (scale){
+          scale.addEventListener('change', () => {
+            if (scale.value === 'Custom'){ scaleCustom.classList.remove('hidden'); }
+            else { scaleCustom.classList.add('hidden'); }
+          });
+        }
+
+        // Paint tier enable/disable based on service
+        const paintWrap = document.getElementById('paint-tier-wrap');
+        form.querySelectorAll('input[name="service"]').forEach(r => {
+          r.addEventListener('change', () => {
+            const disabled = r.value === 'Print Only' && r.checked;
+            paintWrap.style.opacity = disabled ? 0.5 : 1;
+            paintWrap.querySelectorAll('input').forEach(i => { i.disabled = disabled; if (disabled) i.checked = false; });
+          });
+        });
+
+        nextBtn.addEventListener('click', () => {
+          if (!validateStep(current)) return;
+          current = Math.min(current + 1, steps.length - 1);
+          showStep(current);
+        });
+        prevBtn.addEventListener('click', () => {
+          current = Math.max(current - 1, 0);
+          showStep(current);
+        });
+
+        // Simple honeypot check
+        form.addEventListener('submit', (e) => {
+          const trap = form.querySelector('input[name="company"]');
+          if (trap && trap.value.trim() !== ""){
+            e.preventDefault();
+            alert('Spam detected.');
+            return;
+          }
+        });
+
+        // Init
+        showStep(current);
+      
+
+        // Recalculate estimate whenever inputs change
+        ['c_scale','c_scale_custom','c_quantity','c_deadline'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.addEventListener('input', computeEstimate);
+          if (el) el.addEventListener('change', computeEstimate);
+        });
+        document.querySelectorAll('input[name="service"]').forEach(el => el.addEventListener('change', computeEstimate));
+        document.querySelectorAll('input[name="paint_tier"]').forEach(el => el.addEventListener('change', computeEstimate));
+
+        // After each step change, recompute
+        const _origShowStep = showStep;
+        showStep = function(i){ _origShowStep(i); computeEstimate(); }
+
+        // Initial compute
+        computeEstimate();
+})();
+    </script>
+
+
+    <!-- Reviews / MakerWorld Comments -->
+    <section id="reviews" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Community <span class="text-purple-400">Feedback</span></h2>
+                <p class="max-w-2xl mx-auto text-gray-300">Read verified comments from my MakerWorld uploads. I’ll add selected highlights here as they come in.</p>
+            </div>
+            <div id="reviews-empty" class="max-w-xl mx-auto mb-10 text-center bg-gray-800 rounded-xl p-6 border border-gray-700" data-aos="fade-up">
+                <p class="text-gray-300 mb-4">No featured comments yet — but you can see the latest on MakerWorld.</p>
+                <a href="https://makerworld.com/fr/@Cathaldus" target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition">See comments on MakerWorld</a>
+            </div>
+            <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+<script>
+  window.mwReviews = [
+    { quote: "Great design, I love it 5/5", author: "Zaskroniec", model: "Draconic knight (Armored Dragon Warrior Mini)", url: "https://makerworld.com/fr/models/1591557-draconic-knight-armored-dragon-warrior-mini#profileId-1676183" },
+    { quote: "amazing model", author: "sabrinaramosgomes", model: "Arcane Flamecaster : Human Mage Miniature", url: "https://makerworld.com/fr/models/1522902-arcane-flamecaster-human-mage-miniature#profileId-1596094" },
+    { quote: "La stampa è uscita perfetta ora verrà aggiunta alla mia collezione di miniature", author: "MATRIXx", model: "Extravagant Merchant : Mini for Tabletop RPGs", url: "https://makerworld.com/fr/models/1626200-extravagant-merchant-mini-for-tabletop-rpgs#profileId-1717022" },
+    { quote: "Excellent. Imprimé en 0.06mm sans souci", author: "user_1395848139", model: "Orc Warlord : Brutal Miniature (Tabletop Battles)", url: "https://makerworld.com/fr/models/1500728-orc-warlord-brutal-miniature-tabletop-battles#profileId-1569896" },
+    { quote: "We made it a little smaller to fit our DnD figure scale. But nice print", author: "G-Samben", model: "Arcane Flamecaster : Human Mage Miniature", url: "https://makerworld.com/fr/models/1522902-arcane-flamecaster-human-mage-miniature#profileId-1596094" },
+    { quote: "My son loved it!", author: "Oakridge Turner", model: "Orc Warlord : Brutal Miniature (Tabletop Battles)", url: "https://makerworld.com/fr/models/1500728-orc-warlord-brutal-miniature-tabletop-battles#profileId-1569896" },
+    { quote: "love this model! i printed it in plain orange sunlu filament and painted over it with pearl/metallic paints to make it stand out. another xharizard to add to my ever growing collection!", author: "Lord Sephington", model: "Charizard : Fire Dragon", url: "https://makerworld.com/fr/models/1500950-charizard-fire-dragon#profileId-1570141" },
+    { quote: "printed with the creators profile. looks awesome with minor working.", author: "Uncle Ernesto", model: "Guts - Dark Swordsman", url: "https://makerworld.com/fr/models/1447444-guts-dark-swordsman#profileId-1507426" }
+  ];
+
+  (function() {
+    const data = window.mwReviews || [];
+    if (!Array.isArray(data) || data.length === 0) return;
+    const grid = document.getElementById('reviews-grid');
+    const empty = document.getElementById('reviews-empty');
+    if (empty) empty.style.display = 'none';
+    data.forEach((r) => {
+      const card = document.createElement('div');
+      card.className = 'bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700';
+      const modelPart = r.model ? ' on <a href="' + (r.url || '#') + '" target="_blank" class="text-purple-400 hover:text-purple-300">' + r.model + '</a>' : '';
+      card.innerHTML = '<p class="text-gray-200 italic mb-4">"' + (r.quote || '') + '"</p>' +
+                       '<div class="text-sm text-gray-400">— <span class="font-semibold text-gray-300">' + (r.author || 'MakerWorld user') + '</span>' + modelPart + '</div>';
+      grid.appendChild(card);
+    });
+  })();
+</script>
+
+
+
+    <!-- Process Section -->
+    <section id="process" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our <span class="text-purple-400">Process</span></h2>
+                <p class="max-w-2xl mx-auto text-gray-300">From initial concept to final delivery, we follow a meticulous process to ensure quality at every stage.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-600 flex items-center justify-center text-2xl font-bold">1</div>
+                    <h3 class="text-xl font-bold mb-3">Consultation</h3>
+                    <p class="text-gray-300">We discuss your vision, game system requirements, and any specific details you want incorporated.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-600 flex items-center justify-center text-2xl font-bold">2</div>
+                    <h3 class="text-xl font-bold mb-3">Design & Approval</h3>
+                    <p class="text-gray-300">Our artists create digital renders for your approval before any printing begins.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-600 flex items-center justify-center text-2xl font-bold">3</div>
+                    <h3 class="text-xl font-bold mb-3">Precision Printing</h3>
+                    <p class="text-gray-300">Using high-resolution FDM printers, we produce your model with exceptional detail.</p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-600 flex items-center justify-center text-2xl font-bold">4</div>
+                    <h3 class="text-xl font-bold mb-3">Finishing & Delivery</h3>
+                    <p class="text-gray-300">Models are cleaned, lightly smoothed, and carefully packaged for safe delivery to your doorstep.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Get In <span class="text-purple-400">Touch</span></h2>
+                    <p class="max-w-2xl mx-auto text-gray-300">Ready to bring your miniature ideas to life? Contact us for quotes, commissions, or any questions.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <form action="https://formspree.io/f/xpwlkzdd" method="POST">
+                            <div class="mb-6">
+                                <label for="name" class="block text-gray-300 mb-2">Your Name</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="email" class="block text-gray-300 mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                                <select id="subject" name="subject" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="quote">Request a Quote</option>
+                                    <option value="commission">Custom Commission</option>
+                                    <option value="question">General Question</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-300 mb-2">Your Message</label>
+                                <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Send Message</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-bold mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="text-purple-400 text-xl mt-1 mr-4">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Email</h4>
+                                    <a href="mailto:contact@printcraftstudios.com" class="text-gray-300 hover:text-purple-400 transition">contact@printcraftstudios.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="text-purple-400 text-xl mt-1 mr-4">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Phone</h4>
+                                    <p class="text-gray-300">(555) 123-4567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="text-purple-400 text-xl mt-1 mr-4">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Location</h4>
+                                    <p class="text-gray-300">Trois-Rivières, Quebec, Canada</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="text-purple-400 text-xl mt-1 mr-4">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Business Hours</h4>
+                                    <p class="text-gray-300">Monday - Friday: 9am - 5pm EST</p>
+                                    <p class="text-gray-300">Weekends: By appointment</p>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <h4 class="font-bold mb-4">Follow Us</h4>
+                                <div class="flex space-x-4">
+                                    <a href="https://makerworld.com/fr/@Cathaldus" target="_blank" class="w-10 h-10 bg-gray-800 hover:bg-purple-600 rounded-full flex items-center justify-center transition duration-300">
+                                        <i class="fas fa-cube text-xl"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition duration-300">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition duration-300">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-blue-400 rounded-full flex items-center justify-center transition duration-300">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked <span class="text-purple-400">Questions</span></h2>
+                    <p class="max-w-2xl mx-auto text-gray-300">Find answers to common questions about our services and process.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-left">What materials do you use for printing?</h3>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-gray-300">We use high-quality FDM filaments specifically chosen for miniature printing. Standard PLA+ provides excellent detail and durability, with options for flexible (TPU) or tougher (PETG/PLA+) materials available for special requirements.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-left">How long does a custom commission take?</h3>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-gray-300">Turnaround time varies based on project complexity. Simple modifications to existing models typically take 1-2 weeks. Completely original designs may require 3-5 weeks from concept to final print. We'll provide a timeline estimate with your quote.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-left">Do you ship internationally?</h3>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-gray-300">Yes! We ship worldwide from our studio in Quebec. Shipping costs and delivery times vary by destination. All international shipments include tracking and are carefully packaged to ensure your miniatures arrive safely.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-left">Can you recreate copyrighted characters?</h3>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-gray-300">We can create inspired designs that capture the essence of popular characters while maintaining originality. For direct reproductions, we require proof that you own the rights or have permission from the copyright holder.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 5 -->
+                    <div class="bg-gray-800 rounded-lg overflow-hidden">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 focus:outline-none">
+                            <h3 class="text-lg font-bold text-left">What's your policy on returns or defects?</h3>
+                            <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-gray-300">We stand behind our products. If you receive a defective print, contact us within 7 days with photos, and we'll replace it at no cost. Due to the custom nature of our work, we generally don't accept returns, but we'll work to resolve any issues to your satisfaction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold text-purple-400 hover:text-purple-300 transition">PrintCraft Studios</a>
+                    <p class="text-gray-400 mt-2">Premium 3D printed miniatures for tabletop gaming</p>
+                </div>
+                
+                <div class="flex flex-col items-center md:items-end">
+                    <div class="flex space-x-6 mb-4">
+                        <a href="#home" class="text-gray-400 hover:text-purple-400 transition">Home</a>
+                        <a href="#services" class="text-gray-400 hover:text-purple-400 transition">Services</a>
+                        <a href="#gallery" class="text-gray-400 hover:text-purple-400 transition">Gallery</a>
+                        <a href="#contact" class="text-gray-400 hover:text-purple-400 transition">Contact</a>
+                    </div>
+                    
+                    <div class="text-gray-500 text-sm">
+                        &copy; <span id="copyright-year">2025</span> PrintCraft Studios. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburgerBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('menu');
+        
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.toggle('open');
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+        
+        // FAQ accordion functionality
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+                
+                // Toggle the content
+                content.classList.toggle('hidden');
+                
+                // Rotate the icon
+                icon.classList.toggle('rotate-180');
+                
+                // Close other open FAQs
+                faqToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+        
+        // Update copyright year
+        document.getElementById('copyright-year').textContent = new Date().getFullYear();
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                if (!mobileMenu.classList.contains('hidden')) {
+                    hamburgerBtn.classList.remove('open');
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                }
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Added by Assistant: AOS and PhotoSwipe Lightbox -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({ duration: 750, once: true });
+    </script>
+    <script type="module">
+      import PhotoSwipeLightbox from 'https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.3/photoswipe-lightbox.esm.min.js';
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: '#gallery',
+        children: 'a[data-pswp-width]',
+        pswpModule: () => import('https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.3/photoswipe.esm.min.js')
+      });
+      lightbox.init();
+    </script>
+<script>
+      function toggleMemberUI(isLoggedIn){
+        document.querySelectorAll('[data-authed="show"]').forEach(el => el.classList.toggle('hidden', !isLoggedIn));
+        document.querySelectorAll('[data-authed="hide"]').forEach(el => el.classList.toggle('hidden', isLoggedIn));
+        if (isLoggedIn && window.netlifyIdentity) {
+          const user = netlifyIdentity.currentUser();
+          if (user){
+            document.getElementById('memberName').textContent = user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name) || (user.email.split('@')[0]);
+            document.getElementById('memberEmail').textContent = user.email || '';
+          }
+        }
+      }
+      document.addEventListener('DOMContentLoaded', function(){
+        if (!window.netlifyIdentity) return;
+        netlifyIdentity.on('init', user => toggleMemberUI(!!user));
+        netlifyIdentity.on('login', user => { toggleMemberUI(true); netlifyIdentity.close(); location.hash = '#members'; });
+        netlifyIdentity.on('logout', () => { toggleMemberUI(false); });
+
+        // Simple localStorage prefs for logged-in users
+        const key = (suffix) => {
+          const u = netlifyIdentity.currentUser();
+          const id = u ? u.id : 'guest';
+          return 'pcs_pref_' + suffix + '_' + id;
+        };
+        const scaleSel = document.getElementById('prefScale');
+        const tierSel = document.getElementById('prefTier');
+        const saveBtn = document.getElementById('savePrefs');
+        const msg = document.getElementById('saveMsg');
+
+        function loadPrefs(){
+          if (!scaleSel || !tierSel) return;
+          const s = localStorage.getItem(key('scale'));
+          const t = localStorage.getItem(key('tier'));
+          if (s) scaleSel.value = s;
+          if (t) tierSel.value = t;
+        }
+        function savePrefs(){
+          if (!scaleSel || !tierSel) return;
+          localStorage.setItem(key('scale'), scaleSel.value || '');
+          localStorage.setItem(key('tier'), tierSel.value || '');
+          if (msg){ msg.classList.remove('hidden'); setTimeout(()=>msg.classList.add('hidden'), 1500); }
+          // Optionally prefill commission form
+          const scaleField = document.getElementById('c_scale');
+          if (scaleField && scaleSel.value){ scaleField.value = scaleSel.value; scaleField.dispatchEvent(new Event('change')); }
+          const tiers = document.querySelectorAll('input[name="paint_tier"]');
+          tiers.forEach(r => { if (r.value === tierSel.value) r.checked = true; });
+        }
+        saveBtn && saveBtn.addEventListener('click', savePrefs);
+        netlifyIdentity.on('login', loadPrefs);
+        netlifyIdentity.on('init', () => setTimeout(loadPrefs, 200));
+      });
+    </script>
+    <!-- Lightweight analytics to Google Apps Script -->
+    <script>
+      (function(){
+        const ENDPOINT = "https://script.google.com/macros/s/AKfycbzQLdlvUD1TdXjKgBQE3HCuAqmqNz1YLHbBaA1AewDNEmDIcanoKcN3rM3R_ODfLCe3/exec";
+        const Q_KEY = "pcs_evt_queue";
+        let q = [];
+
+        function readQ(){ try{ return JSON.parse(localStorage.getItem(Q_KEY) || "[]"); }catch(e){ return []; } }
+        function writeQ(arr){ try{ localStorage.setItem(Q_KEY, JSON.stringify(arr.slice(-100))); }catch(e){} }
+
+        function enqueue(evt){ q.push(evt); writeQ(readQ().concat([evt]).slice(-100)); }
+
+        function payload(){ const saved = readQ(); const all = saved.concat(q); q = []; writeQ([]); return all; }
+
+        function sendNow(events){
+          if (!events.length) return;
+          const body = JSON.stringify(events);
+          try {
+            if (navigator.sendBeacon) {
+              const ok = navigator.sendBeacon(ENDPOINT, new Blob([body],{type:"text/plain"}));
+              if (!ok) throw new Error("beacon failed");
+            } else {
+              fetch(ENDPOINT, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body});
+            }
+          } catch(e) {
+            // put back on failure
+            writeQ(readQ().concat(events).slice(-100));
+          }
+        }
+
+        function flush(){ const ev = payload(); if (ev.length) sendNow(ev); }
+
+        // Public track()
+        window.track = function(event, extra) {
+          const data = Object.assign({
+            event,
+            path: location.pathname,
+            ref: document.referrer || "",
+            width: window.innerWidth || 0
+          }, extra||{});
+          enqueue(data);
+        };
+
+        // Auto pageview
+        window.addEventListener('load', function(){
+          // restore queued in-memory
+          q = readQ();
+          track('pageview');
+          setTimeout(flush, 200);
+        });
+
+        // Periodic & lifecycle flush
+        setInterval(flush, 3000);
+        document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden') flush(); });
+        window.addEventListener('beforeunload', flush);
+
+        // Hook gallery lightbox clicks (delegate)
+        document.addEventListener('click', function(e){
+          const a = e.target.closest('#gallery a[data-pswp-width]');
+          if (a) {
+            const card = a.closest('.gallery-item');
+            const title = card ? (card.querySelector('h3')?.textContent || '') : '';
+            track('gallery_lightbox', { id: title });
+          }
+        });
+      })();
+    </script>
+
+
+    <!-- Floating Auth Button (Sign in / Account) -->
+    <div id="authFab" class="fixed bottom-6 right-6 z-50">
+      <a id="authFabBtn" href="javascript:void(0)"
+         class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
+         data-analytics="fab_auth" aria-label="Open account">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+          <path d="M12 12c2.761 0 5-2.686 5-6s-2.239-6-5-6-5 2.686-5 6 2.239 6 5 6zm0 2c-4.418 0-8 2.239-8 5v3h16v-3c0-2.761-3.582-5-8-5z"/>
+        </svg>
+        <span id="authFabLabel">Sign in / Sign up</span>
+      </a>
+      <a id="authFabMembers" href="/members"
+         class="mt-3 hidden text-sm text-purple-300 hover:text-white rounded-full bg-gray-800/80 px-3 py-2 shadow"
+         >Go to Members →</a>
+    </div>
+
+  
+  
+  <!-- Netlify Identity (for floating auth button) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    (function(){
+      function byId(id){ return document.getElementById(id); }
+      const btn = byId('authFabBtn');
+      const label = byId('authFabLabel');
+      const membersLink = byId('authFabMembers');
+
+      // Always attach a click handler with safe fallbacks
+      if (btn) {
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          try {
+            if (window.netlifyIdentity) {
+              // init if not already
+              try { netlifyIdentity.init(); } catch(_) {}
+              const user = netlifyIdentity.currentUser();
+              if (user) {
+                // Go to members if already logged in
+                window.location.href = '/members';
+              } else {
+                netlifyIdentity.open('login');
+              }
+            } else {
+              // Fallback: go to members page where Identity is definitely loaded
+              window.location.href = '/members';
+            }
+          } catch (err) {
+            // Last resort fallback
+            window.location.href = '/members';
+          }
+        }, { passive: false });
+      }
+
+      function setState(user){
+        if (!label) return;
+        if (user) {
+          label.textContent = 'My account';
+          if (membersLink) membersLink.classList.remove('hidden');
+        } else {
+          label.textContent = 'Sign in / Sign up';
+          if (membersLink) membersLink.classList.add('hidden');
+        }
+      }
+
+      // If the widget is present, wire events
+      function wireIdentity(){
+        if (!window.netlifyIdentity) return;
+        try { netlifyIdentity.init(); } catch(_) {}
+        netlifyIdentity.on('init', setState);
+        netlifyIdentity.on('login', function(user){ setState(user); try{ netlifyIdentity.close(); } catch(_){}; window.location.href='/members'; });
+        netlifyIdentity.on('logout', function(){ setState(null); });
+        // Also set initial state quickly
+        try { setState(netlifyIdentity.currentUser()); } catch(_) {}
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wireIdentity);
+      } else {
+        wireIdentity();
+      }
+    })();
+  </script>
+
+
+  
+  <!-- Floating Welcome Bubble (shows when logged in; auto-hides) -->
+  <div id="authWelcome" class="fixed z-40 bottom-24 right-6 max-w-xs bg-gray-800 border border-gray-700 text-gray-100 rounded-xl shadow-xl p-4 hidden">
+    <div class="flex items-start gap-3">
+      <div class="text-2xl">👋</div>
+      <div class="flex-1">
+        <div class="text-xs uppercase tracking-wide text-gray-400">Welcome back</div>
+        <div class="font-semibold leading-tight" id="authWelcomeName">Adventurer</div>
+        <a href="/members" class="inline-block mt-2 text-purple-400 hover:text-purple-300 text-sm font-medium">Go to Members →</a>
+      </div>
+      <button id="authWelcomeClose" class="ml-2 -mr-1 text-gray-400 hover:text-gray-200 text-xl leading-none" aria-label="Close welcome">&times;</button>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const bubble = document.getElementById('authWelcome');
+      const nameEl = document.getElementById('authWelcomeName');
+      const closeEl = document.getElementById('authWelcomeClose');
+      if (!bubble) return;
+
+      function firstNameFrom(user){
+        if (!user) return '';
+        const meta = user.user_metadata || {};
+        const full = meta.full_name || meta.name || '';
+        const name = full || (user.email ? user.email.split('@')[0] : 'Friend');
+        return (name || 'Friend').split(' ')[0];
+      }
+
+      function hideWelcome(){ bubble.classList.add('hidden'); }
+
+      function shouldShowNow(){
+        // show if not shown in the last 24h OR on fresh login
+        const last = parseInt(localStorage.getItem('authWelcomeLast') || '0', 10);
+        const now = Date.now();
+        return (now - last) > (24 * 60 * 60 * 1000);
+      }
+
+      function markShown(){ localStorage.setItem('authWelcomeLast', String(Date.now())); }
+
+      function showWelcome(user, force=false){
+        if (!bubble) return;
+        if (!force && !shouldShowNow()) return;
+        if (nameEl) nameEl.textContent = firstNameFrom(user);
+        bubble.classList.remove('hidden');
+        markShown();
+        // Auto-hide after 8s
+        const timer = setTimeout(() => bubble.classList.add('hidden'), 8000);
+        closeEl && closeEl.addEventListener('click', () => {
+          bubble.classList.add('hidden');
+          markShown();
+          clearTimeout(timer);
+        }, { once: true });
+      }
+
+      // Identity hooks
+      if (window.netlifyIdentity){
+        try { netlifyIdentity.init(); } catch(e){}
+        netlifyIdentity.on('init', user => { if (user) showWelcome(user); else hideWelcome(); });
+        netlifyIdentity.on('login', user => { showWelcome(user, true); });
+        netlifyIdentity.on('logout', () => { hideWelcome(); localStorage.removeItem('authWelcomeLast'); });
+      }
+    })();
+  </script>
+
+
+
+  <!-- Favorites + Prefill + Commission History -->
+  <script>
+    (function(){
+
+      // ------------- Utilities -------------
+      const $ = (sel, root) => (root||document).querySelector(sel);
+      const $$ = (sel, root) => Array.from((root||document).querySelectorAll(sel));
+      const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      const track = (event, extra={}) => {
+        try { if (window.track) window.track(event, extra); } catch(_) {}
+      };
+
+      // ------------- Identity helpers -------------
+      function userId() {
+        try { return (window.netlifyIdentity && netlifyIdentity.currentUser()) ? netlifyIdentity.currentUser().id : 'guest'; }
+        catch(_ ) { return 'guest'; }
+      }
+      const keyFavs = () => 'pcs_favs_' + userId();
+      const keyPrefs = () => 'pcs_prefs_' + userId();
+      const keyComms = () => 'pcs_comm_' + userId();
+
+      function load(key, fallback) {
+        try { return JSON.parse(localStorage.getItem(key()) || JSON.stringify(fallback)); }
+        catch(_) { return fallback; }
+      }
+      function save(key, val) {
+        try { localStorage.setItem(key(), JSON.stringify(val)); } catch(_) {}
+      }
+
+      // Normalize favorites to objects: {id,title,img,url}
+      function normalizeFavs(list) {
+        if (!Array.isArray(list)) return [];
+        return list.map(item => {
+          if (item && typeof item === 'object') return item;
+          const title = String(item||'').trim();
+          return { id: slug(title), title, img:'', url:'' };
+        });
+      }
+
+      // ------------- Favorites on Gallery -------------
+      function getCardData(card) {
+        const title = (card.querySelector('h3')?.textContent || '').trim();
+        const img = card.querySelector('img')?.getAttribute('src') || '';
+        const linkEl = card.querySelector('a[href]');
+        const url = linkEl ? linkEl.getAttribute('href') : '#gallery';
+        const id = slug(title);
+        return { id, title, img, url };
+      }
+
+      function loadFavs() { return normalizeFavs(load(keyFavs, [])); }
+      function saveFavs(list) { save(keyFavs, normalizeFavs(list)); }
+
+      function isFav(id) {
+        return loadFavs().some(f => f.id === id);
+      }
+
+      function addFav(f) {
+        const list = loadFavs();
+        if (!list.some(x => x.id === f.id)) list.push(f);
+        saveFavs(list);
+        try {
+          if (window.netlifyIdentity) {
+            const u = netlifyIdentity.currentUser();
+            if (u) u.update({ data: { favs: list } }).catch(()=>{});
+          }
+        } catch(_ ) {}
+        track('fav_add', { id:f.id, title:f.title });
+      }
+
+      function removeFav(id) {
+        let list = loadFavs().filter(f => f.id !== id);
+        saveFavs(list);
+        try {
+          if (window.netlifyIdentity) {
+            const u = netlifyIdentity.currentUser();
+            if (u) u.update({ data: { favs: list } }).catch(()=>{});
+          }
+        } catch(_ ) {}
+        track('fav_remove', { id });
+      }
+
+      function renderFavButton(card) {
+        if (!card) return;
+        card.classList.add('relative');
+        const f = getCardData(card);
+        let btn = card.querySelector('.pcs-fav-btn');
+        if (!btn) {
+          btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'pcs-fav-btn absolute top-2 right-2 bg-gray-900/80 backdrop-blur border border-gray-700 rounded-full p-2 text-pink-400 hover:text-pink-300 shadow';
+          btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" class="fill-current"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.22 2.57A5.02 5.02 0 0 1 15 4c2.5 0 4.5 2 4.5 4.5 0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+          card.appendChild(btn);
+        }
+        const setState = () => {
+          btn.style.opacity = isFav(f.id) ? '1' : '0.75';
+          btn.style.transform = isFav(f.id) ? 'scale(1.05)' : 'scale(1)';
+        };
+        setState();
+        btn.onclick = (e) => {
+          e.preventDefault(); e.stopPropagation();
+          if (isFav(f.id)) removeFav(f.id); else addFav(f);
+          setState();
+        };
+      }
+
+      function initGalleryFavs() {
+        // Attempt to backfill missing image/url for existing favorites using current gallery
+        const favs = loadFavs();
+        let changed = false;
+        favs.forEach(f => {
+          if (!f.img || !f.url) {
+            const match = $$('.gallery-item').map(getCardData).find(cd => cd.id === f.id || cd.title === f.title);
+            if (match) { f.img = f.img || match.img; f.url = f.url || match.url; changed = true; }
+          }
+        });
+        if (changed) saveFavs(favs);
+
+        $$('.gallery-item').forEach(renderFavButton);
+      }
+
+      // ------------- Commission Prefill & History -------------
+      function prefillFromPrefs() {
+        const prefs = load(keyPrefs, {});
+        const scaleSel = $('#c_scale');
+        const tierSelName = 'paint_tier';
+        if (prefs.scale && scaleSel) {
+          scaleSel.value = prefs.scale;
+          scaleSel.dispatchEvent(new Event('change'));
+        }
+        if (prefs.tier) {
+          const radio = document.querySelector('input[name="'+tierSelName+'"][value="'+prefs.tier+'"]');
+          if (radio && !radio.disabled) radio.checked = true;
+        }
+      }
+
+      function hookCommissionSubmit() {
+        const form = $('#commissionForm');
+        if (!form) return;
+        form.addEventListener('submit', () => {
+          try {
+            if (!window.netlifyIdentity) return;
+            const u = netlifyIdentity.currentUser(); if (!u) return;
+            const estimate = document.getElementById('estimate_total')?.value || '';
+            const scale = document.getElementById('c_scale')?.value || '';
+            const tier = (document.querySelector('input[name="paint_tier"]:checked')||{}).value || '';
+            const qty  = document.getElementById('c_quantity')?.value || '1';
+            const model = document.getElementById('c_model_link')?.value || '';
+            const record = { date: new Date().toISOString(), model, scale, tier, qty, estimate };
+            const list = load(keyComms, []); list.unshift(record); save(keyComms, list.slice(0,50));
+            const u2 = netlifyIdentity.currentUser();
+            if (u2) u2.update({ data: { commissions: list.slice(0,50) } }).catch(()=>{});
+          } catch(_ ) {}
+        });
+      }
+
+      // ------------- Sync guest favs after login -------------
+      function syncGuestFavsToUser() {
+        try {
+          if (!window.netlifyIdentity) return;
+          const u = netlifyIdentity.currentUser(); if (!u) return;
+          const guest = JSON.parse(localStorage.getItem('pcs_favs_guest')||'[]');
+          if (guest.length) {
+            const merged = normalizeFavs([ ...load(keyFavs, []), ...guest ]);
+            saveFavs(merged);
+            localStorage.removeItem('pcs_favs_guest');
+            u.update({ data: { favs: merged } }).catch(()=>{});
+          }
+        } catch(_ ) {}
+      }
+
+      // ------------- Init -------------
+      function init() {
+        initGalleryFavs();
+        prefillFromPrefs();
+        hookCommissionSubmit();
+        if (window.netlifyIdentity) {
+          netlifyIdentity.on('init', (u) => { if (u) { syncGuestFavsToUser(); prefillFromPrefs(); } });
+          netlifyIdentity.on('login', () => { syncGuestFavsToUser(); prefillFromPrefs(); initGalleryFavs(); });
+        }
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+
+    })();
+  </script>
+
+
+
+    <!-- Admin webhook: send rich commission submission to Google Apps Script -->
+    <script>
+      (function() {
+        const ADMIN_ENDPOINT = "https://script.google.com/macros/s/AKfycbyYqP2xVVPJDgrPGO8Mcv6tabsU0Q4ZFlG_KQQI30KwdpIf4uROPFADMHZbenLXSBLn/exec";
+        function uuidv4() {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+        const f = document.getElementById('commissionForm');
+        if (!f) return;
+        f.addEventListener('submit', function() {
+          try {
+            const data = {
+              event: 'commission_submit',
+              id: uuidv4(),
+              ts: new Date().toISOString(),
+              path: location.pathname + location.hash,
+              width: window.innerWidth || 0,
+              tz: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+              // Form fields
+              name: f.querySelector('#c_name')?.value || '',
+              email: f.querySelector('#c_email')?.value || '',
+              location: f.querySelector('#c_location')?.value || '',
+              model_link: f.querySelector('#c_model_link')?.value || '',
+              scale: (function(){ 
+                const s = f.querySelector('#c_scale')?.value || ''; 
+                return s === 'Custom' ? (f.querySelector('#c_scale_custom')?.value + 'mm') : s; 
+              })(),
+              service: (f.querySelector('input[name="service"]:checked')||{}).value || '',
+              paint_tier: (f.querySelector('input[name="paint_tier"]:checked')||{}).value || '',
+              deadline: f.querySelector('#c_deadline')?.value || '',
+              deadline_flexible: f.querySelector('#deadline_flexible')?.checked || false,
+              quantity: parseInt(f.querySelector('#c_quantity')?.value || '1', 10) || 1,
+              notes: f.querySelector('#c_colors')?.value || '',
+              estimate: (f.querySelector('#estimate_total')?.value || '').toString(),
+              estimate_breakdown: (f.querySelector('#estimate_breakdown')?.value || '').toString(),
+              started_at: f.querySelector('#started_at')?.value || ''
+            };
+            // Also fire your lightweight tracker if present
+            if (typeof window.track === 'function') { window.track('commission_submit', data); }
+            const body = JSON.stringify(data);
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon(ADMIN_ENDPOINT, new Blob([body], {type: 'text/plain'}));
+            } else {
+              fetch(ADMIN_ENDPOINT, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'text/plain'}, body });
+            }
+          } catch(e) { /* swallow errors so the Formspree submit proceeds */ }
+        });
+      })();
+    </script>
+
+</body>
+</html>

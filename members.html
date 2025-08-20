@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Member Dashboard | PrintCraft Studios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <header class="sticky top-0 z-40 bg-gray-900/80 backdrop-blur border-b border-gray-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-xl font-extrabold">PrintCraft <span class="text-purple-400">Studios</span></a>
+      <nav class="flex gap-4 items-center">
+        <a href="/" class="hover:text-purple-400">Home</a>
+        <a href="/#gallery" class="hover:text-purple-400">Gallery</a>
+        <a href="/#commission" class="hover:text-purple-400">Commission</a>
+        <button id="btnAccount" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700">Account</button>
+        <button id="btnLogout" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 hidden">Log out</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-6">Member <span class="text-purple-400">Dashboard</span></h1>
+
+    <!-- Guest view -->
+    <section id="guestView" class="bg-gray-800 border border-gray-700 rounded-2xl p-6">
+      <p class="text-lg mb-6">Create an account to save preferences, favorite models, and view your commission history.</p>
+      <div class="flex gap-3">
+        <button id="btnSignup" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 font-semibold">Sign up</button>
+        <button id="btnSignin" class="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600">Sign in</button>
+      </div>
+    </section>
+
+    <!-- Member view -->
+    <div id="memberView" class="hidden space-y-8">
+      <!-- Profile -->
+      <section class="bg-gray-800 border border-gray-700 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold">Profile</h3>
+          <div id="userIdent" class="text-sm text-gray-400"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Display name</label>
+            <input id="prefName" type="text" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-700" placeholder="Your name">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Default scale</label>
+            <select id="prefScale" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-700">
+              <option value="">—</option>
+              <option>28mm</option><option>32mm</option><option>35mm</option><option>54mm</option><option>75mm</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Default paint tier</label>
+            <select id="prefTier" class="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-700">
+              <option value="">—</option>
+              <option>Tabletop Ready</option><option>Parade Ready</option><option>Display Quality</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-3">
+          <button id="btnSavePrefs" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 font-semibold">Save preferences</button>
+          <a href="/#commission" class="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600">Start a Commission →</a>
+        </div>
+      </section>
+
+      <!-- Favorites -->
+      <section class="bg-gray-800 border border-gray-700 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xl font-bold">Favorites</h3>
+          <button id="btnClearFavs" class="text-sm text-gray-300 hover:text-red-400">Clear all</button>
+        </div>
+        <div id="favGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        <div id="favEmpty" class="text-gray-400 text-sm">No favorites yet — tap the heart on items in the <a href="/#gallery" class="text-purple-400">gallery</a>.</div>
+      </section>
+
+      <!-- Commission History -->
+      <section class="bg-gray-800 border border-gray-700 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xl font-bold">Commission History</h3>
+          <button id="btnClearComms" class="text-sm text-gray-300 hover:text-red-400">Clear history</button>
+        </div>
+        <div id="commList" class="divide-y divide-gray-700"></div>
+        <div id="commEmpty" class="text-gray-400 text-sm">No commissions yet — start one from the homepage.</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ---------- Helpers ----------
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+    const key = (name, id) => `${name}_${id}`;
+    const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+
+    function user() { try { return netlifyIdentity.currentUser(); } catch(_) { return null; } }
+    function uid()  { const u = user(); return u ? u.id : 'guest'; }
+    const K = {
+      favs: () => key('pcs_favs', uid()),
+      prefs: () => key('pcs_prefs', uid()),
+      comms: () => key('pcs_comm', uid())
+    };
+    const load = (k, v) => { try { return JSON.parse(localStorage.getItem(k())||JSON.stringify(v)); } catch(_) { return v; } };
+    const save = (k, v) => { try { localStorage.setItem(k(), JSON.stringify(v)); } catch(_) {} };
+    const normalizeFavs = list => Array.isArray(list) ? list.map(it => (typeof it==='object'? it : {id: slug(String(it)), title: String(it), img:'', url:''})) : [];
+
+    // ---------- Identity UI ----------
+    function showGuest(){ $('#guestView').classList.remove('hidden'); $('#memberView').classList.add('hidden'); $('#btnLogout').classList.add('hidden'); }
+    function showMember(){ $('#guestView').classList.add('hidden'); $('#memberView').classList.remove('hidden'); $('#btnLogout').classList.remove('hidden'); }
+
+    function nameFromUser(u){
+      const metaName = u?.user_metadata?.name || '';
+      const email = u?.email || '';
+      if (metaName) return metaName;
+      return email ? email.split('@')[0] : 'Member';
+    }
+
+    function renderUser(u){
+      $('#userIdent').textContent = `${nameFromUser(u)} • ${u.email||''}`;
+      const prefs = u?.user_metadata?.prefs || load(K.prefs, {});
+      $('#prefName').value = prefs.name || nameFromUser(u);
+      $('#prefScale').value = prefs.scale || '';
+      $('#prefTier').value  = prefs.tier  || '';
+    }
+
+    // ---------- Favorites ----------
+    function renderFavs(){
+      const grid = $('#favGrid');
+      const empty = $('#favEmpty');
+      grid.innerHTML = '';
+      const favs = normalizeFavs(user()?.user_metadata?.favs || load(K.favs, []));
+      if (!favs.length) { empty.style.display = ''; return; }
+      empty.style.display = 'none';
+      favs.forEach(f => {
+        const wrap = document.createElement('div');
+        wrap.className = 'rounded-xl overflow-hidden border border-gray-700 bg-gray-900';
+        const a = document.createElement('a');
+        a.href = f.url || '/#gallery';
+        a.target = '_blank';
+        a.className = 'block group';
+        a.innerHTML = `
+          <div class="aspect-[4/3] bg-gray-800 overflow-hidden">
+            <img src="${f.img||''}" alt="${f.title||'Favorite'}" class="w-full h-full object-cover group-hover:scale-105 transition">
+          </div>
+          <div class="p-3 text-sm flex items-center justify-between bg-gray-900">
+            <span class="font-semibold">${f.title||'Item'}</span>
+            <button class="rmFav text-gray-400 hover:text-red-400" data-id="${f.id}">Remove</button>
+          </div>`;
+        wrap.appendChild(a);
+        grid.appendChild(wrap);
+      });
+      grid.querySelectorAll('.rmFav').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          const u = user();
+          let favs = normalizeFavs(u?.user_metadata?.favs || load(K.favs, []));
+          favs = favs.filter(x => x.id !== id);
+          save(K.favs, favs);
+          if (u) u.update({ data: { favs } }).catch(()=>{});
+          renderFavs();
+        });
+      });
+    }
+
+    // ---------- Commissions ----------
+    function renderCommissions(){
+      const listEl = $('#commList');
+      const empty = $('#commEmpty');
+      listEl.innerHTML = '';
+      const comms = (user()?.user_metadata?.commissions || load(K.comms, [])).slice(0,50);
+      if (!comms.length) { empty.style.display=''; return; }
+      empty.style.display='none';
+      comms.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'py-3 text-sm flex justify-between items-center';
+        const date = c.date ? new Date(c.date) : new Date();
+        row.innerHTML = `
+          <div>
+            <div class="font-semibold">${c.model ? `<a href="${c.model}" class="text-purple-400" target="_blank">Model</a>` : 'Commission'}</div>
+            <div class="text-gray-400">${date.toLocaleString()} • ${c.scale||''} ${c.tier? '• '+c.tier : ''} • qty ${c.qty||1}</div>
+          </div>
+          <div class="font-bold">${c.estimate||''}</div>`;
+        listEl.appendChild(row);
+      });
+    }
+
+    // ---------- Save Prefs ----------
+    $('#btnSavePrefs')?.addEventListener('click', async () => {
+      const u = user(); if (!u) return;
+      const prefs = {
+        name: $('#prefName').value.trim(),
+        scale: $('#prefScale').value,
+        tier:  $('#prefTier').value
+      };
+      save(K.prefs, prefs);
+      try { await u.update({ data: { prefs } }); } catch(_){}
+      // Optional: also set display name in metadata for nicer greeting
+      try { await u.update({ data: { name: prefs.name } }); } catch(_){}
+      alert('Saved!');
+    });
+
+    // ---------- Clear buttons ----------
+    $('#btnClearFavs')?.addEventListener('click', async () => {
+      const u = user();
+      save(K.favs, []);
+      if (u) { try { await u.update({ data: { favs: [] } }); } catch(_){ } }
+      renderFavs();
+    });
+    $('#btnClearComms')?.addEventListener('click', async () => {
+      const u = user();
+      save(K.comms, []);
+      if (u) { try { await u.update({ data: { commissions: [] } }); } catch(_){ } }
+      renderCommissions();
+    });
+
+    // ---------- Identity wiring ----------
+    function refreshUI(u){
+      if (u) { showMember(); renderUser(u); renderFavs(); renderCommissions(); }
+      else    showGuest();
+    }
+    document.getElementById('btnSignup')?.addEventListener('click', () => netlifyIdentity.open('signup'));
+    document.getElementById('btnSignin')?.addEventListener('click', () => netlifyIdentity.open('login'));
+    document.getElementById('btnAccount')?.addEventListener('click', () => netlifyIdentity.open('user'));
+    document.getElementById('btnLogout')?.addEventListener('click', () => netlifyIdentity.logout());
+
+    if (window.netlifyIdentity) {
+      try { netlifyIdentity.init(); } catch(_){}
+      netlifyIdentity.on('init', refreshUI);
+      netlifyIdentity.on('login', refreshUI);
+      netlifyIdentity.on('logout', refreshUI);
+      netlifyIdentity.on('userUpdated', refreshUI);
+    } else {
+      showGuest();
+    }
+  </script>
+</body>
+</html>

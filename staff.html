@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Console • PrintCraft Studios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans'; }
+    
+    .rank-badge {
+      background: linear-gradient(135deg, var(--rank-color), var(--rank-color-dark));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .rank-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    
+    .progress-bar {
+      background: linear-gradient(90deg, #8B5CF6, #A855F7);
+      transition: width 0.8s ease-in-out;
+    }
+    
+    .glow-effect {
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+    
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .avatar-upload {
+      transition: all 0.2s ease;
+    }
+    
+    .avatar-upload:hover {
+      background: rgba(139, 92, 246, 0.8);
+      transform: scale(1.1);
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
+    }
+    
+    .pulse-glow {
+      animation: pulse-glow 2s infinite;
+    }
+    
+    .stats-card {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(31, 41, 55, 0.8));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+  <!-- Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <header class="sticky top-0 z-30 backdrop-blur border-b border-gray-800 bg-gray-950/80">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-xl font-extrabold">
+        <span class="text-purple-400">PrintCraft</span> Staff Console
+      </a>
+      <div class="flex items-center gap-2">
+        <button id="btnAccount" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+          <i class="fas fa-user mr-2"></i>Account
+        </button>
+        <a href="/" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+          <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <button id="btnLogout" class="hidden px-3 py-2 rounded-lg bg-red-600 hover:bg-red-500 transition">
+          <i class="fas fa-sign-out-alt mr-2"></i>Log out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-10">
+    <!-- Loading State -->
+    <div id="stateLoading" class="bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+      <div class="flex items-center justify-center space-x-3">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+        <span>Loading session…</span>
+      </div>
+    </div>
+
+    <!-- No Auth State -->
+    <div id="stateNoAuth" class="hidden bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+      <div class="text-center">
+        <i class="fas fa-lock text-4xl text-gray-400 mb-4"></i>
+        <h2 class="text-xl font-bold mb-2">Please sign in</h2>
+        <p class="text-gray-400 mb-6">You must be signed in to access the staff console.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <button id="btnSignIn" class="px-6 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 font-bold transition">
+            <i class="fas fa-sign-in-alt mr-2"></i>Sign in
+          </button>
+          <a href="/members" class="px-6 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+            <i class="fas fa-users mr-2"></i>Open members page
+          </a>
+        </div>
+        <p class="text-xs text-gray-500 mt-3">If the modal doesn't open, use the Members page link to sign in and then return here.</p>
+      </div>
+    </div>
+
+    <!-- Forbidden State -->
+    <div id="stateForbidden" class="hidden bg-gray-900/60 border border-gray-800 rounded-xl p-6">
+      <div class="text-center">
+        <i class="fas fa-ban text-4xl text-red-400 mb-4"></i>
+        <h2 class="text-xl font-bold mb-2">Access denied</h2>
+        <p class="text-gray-400">Your account is signed in, but it lacks the <code class="bg-gray-800 px-2 py-1 rounded">staff</code> role. An admin can add roles in Netlify → Identity → Users.</p>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <section id="app" class="hidden">
+      <!-- Staff Profile Header -->
+      <div id="staffProfileSection" class="mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Profile Card -->
+          <div class="lg:col-span-2">
+            <div id="profileCard" class="bg-gray-900 rounded-xl p-6 border border-gray-800 card-hover">
+              <!-- Profile content will be inserted here -->
+            </div>
+          </div>
+          
+          <!-- Quick Stats -->
+          <div class="space-y-4">
+            <div class="stats-card rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-400">This Month</span>
+                <i class="fas fa-calendar-alt text-purple-400"></i>
+              </div>
+              <div class="text-2xl font-bold text-white" id="monthlyPoints">0</div>
+              <div class="text-xs text-gray-500">Points Earned</div>
+            </div>
+            
+            <div class="stats-card rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-400">Completed</span>
+                <i class="fas fa-check-circle text-green-400"></i>
+              </div>
+              <div class="text-2xl font-bold text-white" id="commissionsCompleted">0</div>
+              <div class="text-xs text-gray-500">Commissions</div>
+            </div>
+            
+            <div class="stats-card rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-400">Ranking</span>
+                <i class="fas fa-trophy text-yellow-400"></i>
+              </div>
+              <div class="text-2xl font-bold text-white" id="leaderboardPosition">#-</div>
+              <div class="text-xs text-gray-500">on Leaderboard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="mb-6">
+        <div class="border-b border-gray-800">
+          <nav class="flex space-x-8">
+            <button class="tab-button active py-2 px-1 border-b-2 border-purple-500 font-medium text-purple-400" data-tab="commissions">
+              <i class="fas fa-tasks mr-2"></i>Commissions
+            </button>
+            <button class="tab-button py-2 px-1 border-b-2 border-transparent font-medium text-gray-400 hover:text-gray-300" data-tab="history">
+              <i class="fas fa-history mr-2"></i>Points History
+            </button>
+            <button class="tab-button py-2 px-1 border-b-2 border-transparent font-medium text-gray-400 hover:text-gray-300" data-tab="leaderboard">
+              <i class="fas fa-medal mr-2"></i>Leaderboard
+            </button>
+            <button id="adminTab" class="tab-button hidden py-2 px-1 border-b-2 border-transparent font-medium text-gray-400 hover:text-gray-300" data-tab="admin">
+              <i class="fas fa-crown mr-2"></i>Admin
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="tabContent">
+        <!-- Commissions Tab -->
+        <div id="commissionsTab" class="tab-content">
+          <div class="flex items-end justify-between flex-wrap gap-4 mb-6">
+            <div>
+              <div class="text-sm text-gray-400">Signed in as</div>
+              <div id="me" class="text-lg font-bold">—</div>
+              <div id="meRoles" class="text-xs text-gray-400">—</div>
+            </div>
+            <div class="flex gap-3 items-end">
+              <div>
+                <label class="block text-sm text-gray-400 mb-1" for="filterOwner">View</label>
+                <select id="filterOwner" class="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2">
+                  <option value="unassigned">Unassigned</option>
+                  <option value="mine">My queue</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-400 mb-1" for="filterStatus">Status</label>
+                <select id="filterStatus" class="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2">
+                  <option value="">Any</option>
+                  <option>New</option>
+                  <option>Assigned</option>
+                  <option>Quoted</option>
+                  <option>Deposit paid</option>
+                  <option>In progress</option>
+                  <option>Shipped</option>
+                  <option>Completed</option>
+                  <option>Declined</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-400 mb-1" for="search">Search</label>
+                <input id="search" placeholder="Name, email, model…" class="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 w-64" />
+              </div>
+              <button id="btnRefresh" class="h-10 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full border-separate border-spacing-y-2">
+              <thead>
+                <tr class="text-left text-sm text-gray-400">
+                  <th class="px-3 py-2">When</th>
+                  <th class="px-3 py-2">Client</th>
+                  <th class="px-3 py-2">Model</th>
+                  <th class="px-3 py-2">Scale/Tier</th>
+                  <th class="px-3 py-2">Qty</th>
+                  <th class="px-3 py-2">Estimate</th>
+                  <th class="px-3 py-2">Status</th>
+                  <th class="px-3 py-2">Owner</th>
+                  <th class="px-3 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Points History Tab -->
+        <div id="historyTab" class="tab-content hidden">
+          <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-xl font-bold">
+                <i class="fas fa-history text-purple-400 mr-2"></i>Points History
+              </h3>
+              <button id="refreshHistory" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+                <i class="fas fa-sync-alt mr-2"></i>Refresh
+              </button>
+            </div>
+            <div id="pointsHistoryContent">
+              <div class="text-center text-gray-400 py-8">
+                <i class="fas fa-clock text-4xl mb-4"></i>
+                <p>Loading points history...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard Tab -->
+        <div id="leaderboardTab" class="tab-content hidden">
+          <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-xl font-bold">
+                <i class="fas fa-medal text-yellow-400 mr-2"></i>Staff Leaderboard
+              </h3>
+              <button id="refreshLeaderboard" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+                <i class="fas fa-sync-alt mr-2"></i>Refresh
+              </button>
+            </div>
+            <div id="leaderboardContent">
+              <div class="text-center text-gray-400 py-8">
+                <i class="fas fa-trophy text-4xl mb-4"></i>
+                <p>Loading leaderboard...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Tab -->
+        <div id="adminTab" class="tab-content hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Point Attribution -->
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+              <h3 class="text-xl font-bold mb-4">
+                <i class="fas fa-plus-circle text-green-400 mr-2"></i>Award Points
+              </h3>
+              <form id="awardPointsForm" class="space-y-4">
+                <div>
+                  <label class="block text-sm text-gray-400 mb-1">Staff Member</label>
+                  <input type="email" id="staffEmail" placeholder="staff@example.com" 
+                         class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm text-gray-400 mb-1">Points</label>
+                    <input type="number" id="pointsAmount" placeholder="10" 
+                           class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm text-gray-400 mb-1">Type</label>
+                    <select id="pointType" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2">
+                      <option value="commission">Commission</option>
+                      <option value="bonus">Bonus</option>
+                      <option value="achievement">Achievement</option>
+                      <option value="penalty">Penalty</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-400 mb-1">Description</label>
+                  <input type="text" id="pointDescription" placeholder="Commission completed successfully" 
+                         class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2" required>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-400 mb-1">Notes (Optional)</label>
+                  <textarea id="pointNotes" rows="3" placeholder="Additional notes..." 
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition">
+                  <i class="fas fa-award mr-2"></i>Award Points
+                </button>
+              </form>
+            </div>
+
+            <!-- Staff Statistics -->
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+              <h3 class="text-xl font-bold mb-4">
+                <i class="fas fa-chart-bar text-blue-400 mr-2"></i>Staff Statistics
+              </h3>
+              <div id="staffStats" class="space-y-4">
+                <div class="text-center text-gray-400 py-8">
+                  <i class="fas fa-chart-line text-4xl mb-4"></i>
+                  <p>Loading statistics...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Notes Modal (from original) -->
+  <div id="notesModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-black/70">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-xl w-full max-w-2xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold">
+          <i class="fas fa-sticky-note text-yellow-400 mr-2"></i>Notes
+        </h3>
+        <button id="notesClose" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="grid grid-cols-1 gap-4">
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Client note</div>
+          <div id="clientNote" class="whitespace-pre-wrap text-sm bg-gray-800/60 p-3 rounded-lg border border-gray-800">—</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Internal note (staff)</div>
+          <textarea id="staffNote" rows="4" class="w-full bg-gray-800 text-sm rounded-lg border border-gray-700 px-3 py-2"></textarea>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button id="notesSave" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-sm font-semibold transition">
+            <i class="fas fa-save mr-2"></i>Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-800 border border-gray-700 text-sm px-4 py-2 rounded-lg hidden z-50">
+    Saved
+  </div>
+
+  <!-- Include the staff system JavaScript -->
+  <script src="/js/staff-system.js"></script>
+  
+  <!-- Enhanced Staff Console Script -->
+  <script>
+    const ENDPOINT = "https://script.google.com/macros/s/AKfycbzQLdlvUD1TdXjKgBQE3HCuAqmqNz1YLHbBaA1AewDNEmDIcanoKcN3rM3R_ODfLCe3/exec";
+
+    const S = { user: null, items: [], view: 'unassigned', status: '', q: '' };
+
+    function show(el) { el.classList.remove('hidden'); }
+    function hide(el) { el.classList.add('hidden'); }
+    function byId(id) { return document.getElementById(id); }
+    function showToast(msg, type = 'success') { 
+      const t = byId('toast'); 
+      t.textContent = msg || 'Saved';
+      t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 text-sm px-4 py-2 rounded-lg z-50 ${
+        type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+      }`;
+      show(t); 
+      setTimeout(() => hide(t), 3000); 
+    }
+    function fmtDate(v) { const d = new Date(v); return isNaN(d) ? (v || '') : d.toLocaleString(); }
+    function hasRole(user, role) { const roles = (user?.app_metadata?.roles) || []; return roles.includes(role); }
+
+    // Tab switching functionality
+    function initTabs() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabName = button.dataset.tab;
+          
+          // Update button states
+          tabButtons.forEach(btn => {
+            btn.classList.remove('active', 'border-purple-500', 'text-purple-400');
+            btn.classList.add('border-transparent', 'text-gray-400');
+          });
+          button.classList.add('active', 'border-purple-500', 'text-purple-400');
+          button.classList.remove('border-transparent', 'text-gray-400');
+          
+          // Update content visibility
+          tabContents.forEach(content => {
+            content.classList.add('hidden');
+          });
+          const targetContent = document.getElementById(tabName + 'Tab');
+          if (targetContent) {
+            targetContent.classList.remove('hidden');
+          }
+          
+          // Load content based on tab
+          if (tabName === 'history') {
+            loadPointsHistory();
+          } else if (tabName === 'leaderboard') {
+            loadLeaderboard();
+          } else if (tabName === 'admin') {
+            loadAdminData();
+          }
+        });
+      });
+    }
+
+    function gate() {
+      hide(byId('stateLoading'));
+      const u = window.netlifyIdentity && netlifyIdentity.currentUser();
+      if (!u) { show(byId('stateNoAuth')); return false; }
+      if (!(hasRole(u, 'staff') || hasRole(u, 'admin'))) { show(byId('stateForbidden')); return false; }
+      show(byId('app')); show(byId('btnLogout'));
+      byId('me').textContent = u.user_metadata?.full_name || u.email;
+      byId('meRoles').textContent = 'Roles: ' + ((u.app_metadata?.roles) || []).join(', ') || '(none)';
+      S.user = u;
+      
+      // Show admin tab if user is admin
+      if (hasRole(u, 'admin')) {
+        show(byId('adminTab'));
+      }
+      
+      // Initialize staff profile
+      initializeStaffProfile();
+      
+      return true;
+    }
+
+    function initializeStaffProfile() {
+      if (!S.user) return;
+      
+      // Mock staff profile data (in real implementation, this would come from the backend)
+      const mockProfile = {
+        email: S.user.email,
+        fullName: S.user.user_metadata?.full_name || S.user.email,
+        totalPoints: 150, // Mock data
+        avatarUrl: '', // Will be loaded from backend
+        joinDate: new Date('2024-01-01'),
+        commissionsCompleted: 12,
+        monthlyPoints: 45,
+        leaderboardPosition: 3
+      };
+      
+      renderStaffProfile(mockProfile);
+    }
+
+    function renderStaffProfile(profile) {
+      const rank = calculateRank(profile.totalPoints);
+      const profileCard = byId('profileCard');
+      
+      profileCard.innerHTML = `
+        <div class="flex items-center space-x-6 mb-6">
+          <div class="relative">
+            <img src="${profile.avatarUrl || 'https://via.placeholder.com/80x80/374151/9CA3AF?text=' + (profile.fullName?.charAt(0) || 'S')}" 
+                 alt="Avatar" 
+                 class="w-20 h-20 rounded-full object-cover border-3 border-purple-500 glow-effect">
+            <button id="avatarUpload" class="avatar-upload absolute -bottom-1 -right-1 bg-purple-600 hover:bg-purple-700 rounded-full p-2 text-sm">
+              <i class="fas fa-camera"></i>
+            </button>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-white mb-1">${profile.fullName}</h3>
+            <p class="text-gray-400 mb-3">${profile.email}</p>
+            <div class="flex items-center space-x-4">
+              <div class="flex items-center space-x-2">
+                <span class="text-3xl font-bold text-purple-400">${profile.totalPoints}</span>
+                <span class="text-gray-400">points</span>
+              </div>
+              <div class="text-sm text-gray-500">
+                Member since ${new Date(profile.joinDate).toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            ${renderRankBadge(rank)}
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          ${renderProgressBar(rank)}
+        </div>
+        
+        <div class="grid grid-cols-3 gap-4">
+          <div class="text-center bg-gray-800/50 rounded-lg p-3">
+            <div class="text-lg font-bold text-green-400">${profile.commissionsCompleted}</div>
+            <div class="text-xs text-gray-400">Completed</div>
+          </div>
+          <div class="text-center bg-gray-800/50 rounded-lg p-3">
+            <div class="text-lg font-bold text-blue-400">4.8</div>
+            <div class="text-xs text-gray-400">Avg Rating</div>
+          </div>
+          <div class="text-center bg-gray-800/50 rounded-lg p-3">
+            <div class="text-lg font-bold text-yellow-400">#${profile.leaderboardPosition}</div>
+            <div class="text-xs text-gray-400">Ranking</div>
+          </div>
+        </div>
+      `;
+      
+      // Update quick stats
+      byId('monthlyPoints').textContent = profile.monthlyPoints;
+      byId('commissionsCompleted').textContent = profile.commissionsCompleted;
+      byId('leaderboardPosition').textContent = '#' + profile.leaderboardPosition;
+    }
+
+    function calculateRank(points) {
+      const ranks = [
+        { name: 'Apprentice', minPoints: 0, maxPoints: 99, color: '#CD7F32', icon: 'hammer' },
+        { name: 'Artisan', minPoints: 100, maxPoints: 249, color: '#C0C0C0', icon: 'gear' },
+        { name: 'Master Craftsman', minPoints: 250, maxPoints: 499, color: '#FFD700', icon: 'crown' },
+        { name: 'Guild Leader', minPoints: 500, maxPoints: 999, color: '#8A2BE2', icon: 'star' },
+        { name: 'Legendary Artisan', minPoints: 1000, maxPoints: Infinity, color: '#B9F2FF', icon: 'lightning' }
+      ];
+
+      for (const rank of ranks) {
+        if (points >= rank.minPoints && points <= rank.maxPoints) {
+          const nextRank = ranks[ranks.indexOf(rank) + 1];
+          const progress = nextRank ? 
+            Math.round(((points - rank.minPoints) / (nextRank.minPoints - rank.minPoints)) * 100) : 100;
+          
+          return {
+            ...rank,
+            progress,
+            pointsToNext: nextRank ? nextRank.minPoints - points : 0,
+            nextRank: nextRank?.name || null
+          };
+        }
+      }
+      return ranks[0];
+    }
+
+    function renderRankBadge(rank) {
+      const iconMap = {
+        hammer: 'fas fa-hammer',
+        gear: 'fas fa-cog',
+        crown: 'fas fa-crown',
+        star: 'fas fa-star',
+        lightning: 'fas fa-bolt'
+      };
+
+      return `
+        <div class="flex flex-col items-center">
+          <div class="rank-badge w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl" 
+               style="--rank-color: ${rank.color}; --rank-color-dark: ${rank.color}dd;">
+            <i class="${iconMap[rank.icon] || 'fas fa-trophy'}"></i>
+          </div>
+          <span class="text-sm font-semibold mt-2 text-gray-300">${rank.name}</span>
+        </div>
+      `;
+    }
+
+    function renderProgressBar(rank) {
+      return `
+        <div class="w-full">
+          <div class="flex justify-between text-sm text-gray-400 mb-2">
+            <span>Progress to ${rank.nextRank || 'Max Rank'}</span>
+            <span>${rank.pointsToNext > 0 ? `${rank.pointsToNext} points needed` : 'Max rank achieved!'}</span>
+          </div>
+          <div class="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
+            <div class="progress-bar h-4 rounded-full" style="width: ${Math.min(rank.progress, 100)}%"></div>
+          </div>
+          <div class="text-center text-sm text-gray-400 mt-2">${rank.progress}% Complete</div>
+        </div>
+      `;
+    }
+
+    function loadPointsHistory() {
+      const content = byId('pointsHistoryContent');
+      // Mock data - in real implementation, this would come from the backend
+      const mockHistory = [
+        { description: 'Premium commission completed', pointsAwarded: 15, pointType: 'commission', dateAwarded: new Date(), notes: 'Excellent quality work' },
+        { description: 'On-time delivery bonus', pointsAwarded: 2, pointType: 'bonus', dateAwarded: new Date(Date.now() - 86400000), notes: '' },
+        { description: 'Basic commission completed', pointsAwarded: 10, pointType: 'commission', dateAwarded: new Date(Date.now() - 172800000), notes: '' }
+      ];
+      
+      content.innerHTML = renderPointsHistory(mockHistory);
+    }
+
+    function renderPointsHistory(history) {
+      if (!history || history.length === 0) {
+        return '<div class="text-gray-400 text-center py-8"><i class="fas fa-inbox text-4xl mb-4"></i><p>No points history available</p></div>';
+      }
+
+      return `
+        <div class="space-y-4">
+          ${history.map(entry => `
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 card-hover">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <div class="font-semibold text-white mb-1">${entry.description}</div>
+                  <div class="text-sm text-gray-400 mb-1">
+                    <i class="fas fa-tag mr-1"></i>${entry.pointType} • 
+                    <i class="fas fa-calendar mr-1"></i>${new Date(entry.dateAwarded).toLocaleDateString()}
+                  </div>
+                  ${entry.notes ? `<div class="text-xs text-gray-500 bg-gray-800 rounded px-2 py-1 mt-2">${entry.notes}</div>` : ''}
+                </div>
+                <div class="text-right ml-4">
+                  <div class="font-bold text-lg ${entry.pointsAwarded > 0 ? 'text-green-400' : 'text-red-400'}">
+                    ${entry.pointsAwarded > 0 ? '+' : ''}${entry.pointsAwarded}
+                  </div>
+                  <div class="text-xs text-gray-400">points</div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function loadLeaderboard() {
+      const content = byId('leaderboardContent');
+      // Mock data - in real implementation, this would come from the backend
+      const mockLeaderboard = [
+        { fullName: 'Alice Johnson', email: 'alice@example.com', totalPoints: 450, currentRank: 'Master Craftsman', rankColor: '#FFD700' },
+        { fullName: 'Bob Smith', email: 'bob@example.com', totalPoints: 320, currentRank: 'Artisan', rankColor: '#C0C0C0' },
+        { fullName: S.user?.user_metadata?.full_name || S.user?.email, email: S.user?.email, totalPoints: 150, currentRank: 'Artisan', rankColor: '#C0C0C0' },
+        { fullName: 'Carol Davis', email: 'carol@example.com', totalPoints: 85, currentRank: 'Apprentice', rankColor: '#CD7F32' }
+      ];
+      
+      content.innerHTML = renderLeaderboard(mockLeaderboard);
+    }
+
+    function renderLeaderboard(leaderboard) {
+      return `
+        <div class="space-y-3">
+          ${leaderboard.map((staff, index) => `
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 card-hover ${staff.email === S.user?.email ? 'ring-2 ring-purple-500' : ''}">
+              <div class="flex items-center space-x-4">
+                <div class="text-2xl font-bold ${index === 0 ? 'text-yellow-400' : index === 1 ? 'text-gray-300' : index === 2 ? 'text-orange-400' : 'text-gray-400'}">
+                  #${index + 1}
+                </div>
+                <img src="https://via.placeholder.com/48x48/374151/9CA3AF?text=${staff.fullName?.charAt(0) || 'S'}" 
+                     alt="Avatar" class="w-12 h-12 rounded-full">
+                <div class="flex-1">
+                  <div class="font-semibold text-white">${staff.fullName}</div>
+                  <div class="text-sm text-gray-400">${staff.email}</div>
+                </div>
+                <div class="text-center">
+                  <div class="font-bold text-lg text-purple-400">${staff.totalPoints}</div>
+                  <div class="text-xs text-gray-400">points</div>
+                </div>
+                <div class="text-center">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" 
+                       style="background: ${staff.rankColor};">
+                    ${index === 0 ? '👑' : index === 1 ? '⚙️' : index === 2 ? '⚙️' : '🔨'}
+                  </div>
+                  <div class="text-xs text-gray-400 mt-1">${staff.currentRank}</div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function loadAdminData() {
+      // Initialize admin functionality
+      setupAdminForms();
+    }
+
+    function setupAdminForms() {
+      const form = byId('awardPointsForm');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const formData = {
+            staffEmail: byId('staffEmail').value,
+            points: parseInt(byId('pointsAmount').value),
+            pointType: byId('pointType').value,
+            description: byId('pointDescription').value,
+            notes: byId('pointNotes').value
+          };
+          
+          try {
+            // In real implementation, this would call the backend
+            showToast(`Awarded ${formData.points} points to ${formData.staffEmail}`, 'success');
+            form.reset();
+          } catch (error) {
+            showToast('Failed to award points: ' + error.message, 'error');
+          }
+        });
+      }
+    }
+
+    // Original commission management code (preserved)
+    async function fetchCommissions() {
+      try {
+        const res = await fetch(ENDPOINT + '?feed=commissions&limit=500', { cache: 'no-store', redirect: 'follow' });
+        const data = await res.json();
+        S.items = data.items || [];
+        window.__ITEMS__ = S.items;
+        render();
+      } catch (err) {
+        console.error('feed error', err);
+        byId('rows').innerHTML = '<tr><td class="px-3 py-2 text-red-400">Failed to load feed.</td></tr>';
+      }
+    }
+
+    function filtered() {
+      const mine = (S.user?.email) || '';
+      return S.items.filter(it => {
+        const owner = it.assignee_email || it.owner || '';
+        if (S.view === 'unassigned' && owner) return false;
+        if (S.view === 'mine' && owner !== mine) return false;
+        if (S.status && (it.status || '') !== S.status) return false;
+        const q = S.q.trim().toLowerCase();
+        if (!q) return true;
+        return [it.name, it.email, it.model_title, it.model_link, it.scale, it.tier, it.status, it.notes].some(x => String(x || '').toLowerCase().includes(q));
+      });
+    }
+
+    function render() {
+      const body = byId('rows');
+      body.innerHTML = '';
+      const items = filtered().slice().reverse();
+      for (const it of items) {
+        const owner = it.assignee_email || it.owner || '';
+        const ownerName = it.assignee_name || it.owner_name || '';
+        const tr = document.createElement('tr');
+        tr.className = 'bg-gray-900 border border-gray-800 rounded-lg';
+        const due = it.deadline ? `<div class='text-xs text-purple-300 mt-0.5'>Due: ${it.deadline}${it.deadline_flexible ? ' (flexible)' : ''}</div>` : '';
+        tr.innerHTML = `
+          <td class="align-top px-3 py-2 text-sm">${fmtDate(it.timestamp)}${due}</td>
+          <td class="align-top px-3 py-2"><div class="font-semibold">${it.name || '-'}</div><div class="text-sm text-gray-400">${it.email || ''}</div></td>
+          <td class="align-top px-3 py-2"><div class="font-semibold">${it.model_title || '-'}</div><a class="text-purple-400 text-sm hover:underline" href="${it.model_link || '#'}" target="_blank">Open link</a></td>
+          <td class="align-top px-3 py-2 text-sm">${it.scale || '-'} / ${it.tier || '-'}</td>
+          <td class="align-top px-3 py-2 text-sm">${it.quantity || '1'}</td>
+          <td class="align-top px-3 py-2 font-bold">${it.estimate || '-'}</td>
+          <td class="align-top px-3 py-2">
+            <select data-action="status" data-id="${it.id}" class="bg-gray-950 border border-gray-800 rounded-lg px-2 py-1 text-sm">
+              ${['New', 'Assigned', 'Quoted', 'Deposit paid', 'In progress', 'Shipped', 'Completed', 'Declined'].map(s => `<option ${s === (it.status || 'New') ? 'selected' : ''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td class="align-top px-3 py-2 text-sm">
+            ${owner ? `<div class="font-semibold">${ownerName || owner}</div><div class="text-gray-400">${owner}</div>` : '<span class="text-gray-400">—</span>'}
+          </td>
+          <td class="align-top px-3 py-2">
+            <div class="flex gap-2">
+              ${owner ? `<button data-action="release" data-id="${it.id}" class="px-3 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm transition">Release</button>`
+                      : `<button data-action="claim" data-id="${it.id}" class="px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-sm font-bold transition">Claim</button>`}
+              <button data-action="view-notes" data-id="${it.id}" class="px-3 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm transition">Notes</button>
+              <a class="px-3 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm transition" href="mailto:${it.email}?subject=About your PrintCraft commission&body=Hi ${encodeURIComponent(it.name || 'there')},%0D%0A%0D%0A(Write your message here)%0D%0A" target="_blank">Reply</a>
+            </div>
+          </td>
+        `;
+        body.appendChild(tr);
+      }
+      body.querySelectorAll('[data-action="claim"]').forEach(b => b.addEventListener('click', () => updateOwner(b.dataset.id, true)));
+      body.querySelectorAll('[data-action="release"]').forEach(b => b.addEventListener('click', () => updateOwner(b.dataset.id, false)));
+      body.querySelectorAll('select[data-action="status"]').forEach(s => s.addEventListener('change', () => updateStatus(s.dataset.id, s.value)));
+      body.querySelectorAll('[data-action="view-notes"]').forEach(b => b.addEventListener('click', () => openNotes(b.dataset.id)));
+    }
+
+    function postUpdate(payload) {
+      const body = JSON.stringify(payload);
+      if (navigator.sendBeacon) {
+        const ok = navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'text/plain' }));
+        if (!ok) fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body });
+      } else {
+        fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body });
+      }
+    }
+
+    function updateOwner(id, claim) {
+      const u = S.user;
+      postUpdate({ event: 'admin_update', id, status: claim ? 'Assigned' : 'New', assignee_email: claim ? (u.email || '') : '', assignee_name: claim ? (u.user_metadata?.full_name || '') : '' });
+      showToast(claim ? 'Claimed' : 'Released');
+      setTimeout(fetchCommissions, 700);
+    }
+    
+    function updateStatus(id, status) {
+      postUpdate({ event: 'admin_update', id, status });
+      showToast('Status updated');
+      setTimeout(fetchCommissions, 500);
+    }
+
+    // Notes modal functionality (preserved from original)
+    const modal = document.getElementById('notesModal');
+    const clientNote = document.getElementById('clientNote');
+    const staffNote = document.getElementById('staffNote');
+    const btnClose = document.getElementById('notesClose');
+    const btnSave = document.getElementById('notesSave');
+    let currentItemId = null;
+
+    function openModal() { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+    function closeModal() { modal.classList.add('hidden'); modal.classList.remove('flex'); currentItemId = null; }
+    btnClose.addEventListener('click', closeModal);
+
+    function openNotes(id) {
+      const item = (window.__ITEMS__ || []).find(i => i.id === id) || {};
+      currentItemId = id;
+      clientNote.textContent = item.notes || '—';
+      staffNote.value = item.internal_notes || '';
+      openModal();
+    }
+    
+    btnSave.addEventListener('click', () => {
+      if (!currentItemId) return closeModal();
+      postUpdate({ event: 'admin_update', id: currentItemId, internal_notes: staffNote.value });
+      showToast('Notes saved');
+      closeModal();
+      setTimeout(fetchCommissions, 700);
+    });
+
+    // UI event handlers
+    document.getElementById('btnAccount')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open('account'));
+    document.getElementById('btnLogout')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.logout());
+    document.getElementById('btnRefresh')?.addEventListener('click', fetchCommissions);
+    document.getElementById('btnSignIn')?.addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open('login'));
+
+    document.getElementById('filterOwner')?.addEventListener('change', (e) => { S.view = e.target.value; render(); });
+    document.getElementById('filterStatus')?.addEventListener('change', (e) => { S.status = e.target.value; render(); });
+    document.getElementById('search')?.addEventListener('input', (e) => { S.q = e.target.value; render(); });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initTabs();
+      
+      let started = false;
+      function start() { 
+        if (started) return; 
+        started = true; 
+        if (gate()) fetchCommissions(); 
+      }
+      
+      if (!window.netlifyIdentity) {
+        setTimeout(() => {
+          const l = byId('stateLoading'); if (l) l.style.display = 'none';
+          const n = byId('stateNoAuth'); if (n) n.style.display = 'block';
+        }, 2000);
+        return;
+      }
+      
+      netlifyIdentity.on('init', start);
+      netlifyIdentity.on('error', start);
+      netlifyIdentity.on('login', () => location.reload());
+      netlifyIdentity.on('logout', () => location.href = '/');
+      netlifyIdentity.init({ APIUrl: location.origin + '/.netlify/identity' });
+      setTimeout(() => { start(); }, 1800);
+    });
+  </script>
+</body>
+</html>
+
